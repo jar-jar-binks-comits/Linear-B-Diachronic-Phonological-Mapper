@@ -1,0 +1,59 @@
+{
+  "noun_declensions": {
+    "o_stem_masculine": {
+      "description": "Thematic o-stem masculine nouns (e.g. θεός)",
+      "endings": {
+        "nominative_sg": ["-o-s", "-o"],
+        "genitive_sg": ["-o-jo", "-o-o"],
+        "dative_sg": ["-o-i"],
+        "accusative_sg": ["-o-n"],
+        "nominative_pl": ["-o-i"],
+        "genitive_pl": ["-o-on"],
+        "dative_pl": ["-o-is", "-o-i-si"],
+        "accusative_pl": ["-o-ns", "-o-s"]
+      },
+      "examples": ["te-o", "a-ko-ro"]
+    },
+    "a_stem_feminine": {
+      "description": "A-stem feminine nouns (e.g. πότνια)",
+      "endings": {
+        "nominative_sg": ["-a", "-a2"],
+        "genitive_sg": ["-a-s"],
+        "dative_sg": ["-a-i"],
+        "accusative_sg": ["-a-n"],
+        "nominative_pl": ["-a-i"],
+        "dative_pl": ["-a-is"]
+      },
+      "examples": ["po-ti-ni-ja", "ko-wa"]
+    },
+    "consonant_stem": {
+      "description": "Athematic consonant stems (e.g. ἄναξ)",
+      "endings": {
+        "nominative_sg": ["-s", "∅"],
+        "genitive_sg": ["-o-s"],
+        "dative_sg": ["-e", "-i"],
+        "accusative_sg": ["-a"],
+        "instrumental_sg": ["-e"],
+        "nominative_pl": ["-e-s"],
+        "dative_pl": ["-si"]
+      },
+      "examples": ["wa-na-ka", "ko-re"]
+    }
+  },
+  "case_markers": {
+    "-o-jo": {"case": "genitive", "number": "singular", "stem": "o_stem"},
+    "-o-i": {"case": "dative", "number": "singular", "stem": "o_stem"},
+    "-o-n": {"case": "accusative", "number": "singular", "stem": "o_stem"},
+    "-a-s": {"case": "genitive", "number": "singular", "stem": "a_stem"},
+    "-a-i": {"case": "dative", "number": "singular", "stem": "a_stem"},
+    "-te": {"case": "dative", "number": "singular", "stem": "consonant"},
+    "-de": {"case": "directive", "number": "singular", "note": "motion towards"},
+    "-pi": {"case": "locative", "number": "plural", "note": "place where"},
+    "-si": {"case": "dative", "number": "plural", "stem": "consonant"}
+  },
+  "notes": {
+    "a2": "Represents long ā in some contexts, distinct from short -a",
+    "directive": "Mycenaean-specific case for motion/direction, merged into dative in Classical",
+    "instrumental": "Separate case in Mycenaean, lost by Classical period"
+  }
+}

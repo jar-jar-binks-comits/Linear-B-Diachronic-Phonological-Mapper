@@ -1,0 +1,132 @@
+{
+  "words": {
+    "wa-na-ka": {
+      "stem": "wanak",
+      "reconstruction": "wanaks",
+      "classical_greek": "ἄναξ",
+      "classical_transliteration": "anax",
+      "meaning": "king, lord, ruler",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "consonant_stem",
+      "etymology": "From PIE *wen- 'to desire, strive for' + agent suffix",
+      "sound_changes": ["loss of initial digamma", "final *-ks > -x"],
+      "attested_forms": ["wa-na-ka", "wa-na-ka-te", "wa-na-ka-to"]
+    },
+    "wa-na-ka-te": {
+      "stem": "wanak",
+      "reconstruction": "wanaktei",
+      "classical_greek": "ἄνακτι",
+      "meaning": "to/for the king (dative singular)",
+      "pos": "noun",
+      "case": "dative",
+      "number": "singular",
+      "declension": "consonant_stem"
+    },
+    "po-ti-ni-ja": {
+      "stem": "potni",
+      "reconstruction": "potnia",
+      "classical_greek": "πότνια",
+      "classical_transliteration": "potnia",
+      "meaning": "mistress, lady, goddess",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine",
+      "etymology": "From PIE *poti- 'master' + feminine suffix",
+      "sound_changes": ["maintains archaic forms"],
+      "notes": "Common epithet for goddesses"
+    },
+    "te-o": {
+      "stem": "theo",
+      "reconstruction": "theos",
+      "classical_greek": "θεός",
+      "classical_transliteration": "theos",
+      "meaning": "god, deity",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "etymology": "From PIE *dheh₁s- 'to set, place' (divine powers)",
+      "attested_forms": ["te-o", "te-o-i"]
+    },
+    "do-e-ro": {
+      "stem": "dohelo",
+      "reconstruction": "dohelos",
+      "classical_greek": "δοῦλος",
+      "classical_transliteration": "doulos",
+      "meaning": "slave, servant",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "sound_changes": ["e > ou in Attic"]
+    },
+    "do-e-ra": {
+      "stem": "dohela",
+      "reconstruction": "dohela",
+      "classical_greek": "δούλη",
+      "meaning": "female slave",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine"
+    },
+    "ka-ko": {
+      "stem": "khalk",
+      "reconstruction": "khalkos",
+      "classical_greek": "χαλκός",
+      "classical_transliteration": "khalkos",
+      "meaning": "bronze, copper",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "notes": "Central to Bronze Age economy"
+    },
+    "a-re-pa": {
+      "stem": "alepha",
+      "reconstruction": "aleiphar",
+      "classical_greek": "ἄλειφαρ",
+      "meaning": "oil, unguent",
+      "pos": "noun",
+      "etymology": "Related to ἀλείφω 'to anoint'"
+    },
+    "e-re-u-te-ro": {
+      "stem": "eleuthero",
+      "reconstruction": "eleutheros",
+      "classical_greek": "ἐλεύθερος",
+      "meaning": "free (person)",
+      "pos": "adjective",
+      "declension": "o_stem_masculine"
+    },
+    "ko-wa": {
+      "stem": "korwa",
+      "reconstruction": "korwa",
+      "classical_greek": "κόρη",
+      "classical_transliteration": "kore",
+      "meaning": "girl, maiden",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine",
+      "sound_changes": ["loss of digamma: korwa > kore"]
+    },
+    "ko-wo": {
+      "stem": "korwo",
+      "reconstruction": "korwos",
+      "classical_greek": "κόρος/κοῦρος",
+      "meaning": "boy, youth",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine"
+    }
+  },
+  "common_endings": {
+    "-o": "nominative singular (o-stem masculine/neuter)",
+    "-o-jo": "genitive singular (o-stem)",
+    "-o-i": "dative singular or nominative plural (o-stem)",
+    "-o-n": "accusative singular (o-stem)",
+    "-a": "nominative singular (a-stem feminine)",
+    "-a-s": "genitive singular or accusative plural (a-stem)",
+    "-a-i": "dative singular (a-stem)",
+    "-te": "dative singular (consonant stem)",
+    "-de": "directive case (motion towards)",
+    "-si": "dative plural",
+    "-pi": "locative plural"
+  }
+}
