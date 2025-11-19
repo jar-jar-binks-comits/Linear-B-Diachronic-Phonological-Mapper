@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bronze: #CD7F32;
+    --dark-bronze: #8B5A2B;
+    --clay: #C19A6B;
+    --parchment: #F4E8D0;
+    --dark-bg: #1a1a1a;
+    --text-dark: #2c2c2c;
+    --text-light: #ffffff;
+    --accent: #4A90E2;
+    --success: #27ae60;
+    --border: #ddd;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--parchment) 0%, var(--clay) 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+header {
+    text-align: center;
+    padding: 3rem 0;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: var(--dark-bronze);
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+section {
+    background: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+h2 {
+    color: var(--dark-bronze);
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    border-bottom: 3px solid var(--bronze);
+    padding-bottom: 0.5rem;
+}
+
+/* Input Section */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+textarea {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-family: 'Noto Sans Linear B', sans-serif;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    resize: vertical;
+    min-height: 100px;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--bronze);
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: var(--bronze);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--dark-bronze);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-secondary {
+    background: #e0e0e0;
+    color: var(--text-dark);
+}
+
+.btn-secondary:hover {
+    background: #d0d0d0;
+}
+
+.examples {
+    padding: 1rem;
+    background: #f9f9f9;
+    border-radius: 8px;
+}
+
+.examples p {
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #666;
+}
+
+.example-btn {
+    padding: 0.5rem 1rem;
+    margin: 0.25rem;
+    background: white;
+    border: 2px solid var(--bronze);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.example-btn:hover {
+    background: var(--bronze);
+    color: white;
+}
+
+.syllabary-panel {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.syllabary-panel h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--dark-bronze);
+}
+
+.syllabary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 0.5rem;
+}
+
+.syllabary-sign {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.syllabary-sign:hover {
+    background: var(--bronze);
+    color: white;
+    transform: scale(1.05);
+}
+
+.syllabary-sign .sign {
+    font-family: 'Noto Sans Linear B', sans-serif;
+    font-size: 1.5rem;
+}
+
+.syllabary-sign .label {
+    font-size: 0.7rem;
+    margin-top: 0.25rem;
+}
+
+/* Results Section */
+.word-result {
+    background: #f8f8f8;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--bronze);
+}
+
+.word-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.linear-b-text {
+    font-family: 'Noto Sans Linear B', sans-serif;
+    font-size: 2rem;
+    color: var(--dark-bronze);
+}
+
+.transliteration {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.phonetic {
+    font-style: italic;
+    color: #666;
+    margin-left: 1rem;
+}
+
+.analysis-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.analysis-card {
+    background: white;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.analysis-card h4 {
+    color: var(--dark-bronze);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.analysis-card p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+}
+
+.stage-timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 1rem;
+}
+
+.stage {
+    position: relative;
+    padding: 0.75rem 0;
+    padding-left: 1rem;
+    border-left: 2px solid var(--bronze);
+}
+
+.stage::before {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 1rem;
+    width: 10px;
+    height: 10px;
+    background: var(--bronze);
+    border-radius: 50%;
+}
+
+.stage-form {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.stage-period {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.stage-change {
+    font-size: 0.9rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* Lexicon Browser */
+.lexicon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.lexicon-item {
+    background: #f8f8f8;
+    padding: 1rem;
+    border-radius: 6px;
+    border-left: 3px solid var(--bronze);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lexicon-item:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.lexicon-item .transliteration {
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.lexicon-item .meaning {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.lexicon-item .classical {
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Sound Changes */
+.change-card {
+    background: #f8f8f8;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent);
+}
+
+.change-card h3 {
+    color: var(--dark-bronze);
+    margin-bottom: 0.5rem;
+}
+
+.change-rule {
+    font-family: monospace;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 4px;
+    margin: 0.5rem 0;
+}
+
+.change-period {
+    color: #666;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Loading state */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '...';
+    animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .button-group {
+        flex-direction: column;
+    }
+    
+    .analysis-grid {
+        grid-template-columns: 1fr;
+    }
+
+    
+}

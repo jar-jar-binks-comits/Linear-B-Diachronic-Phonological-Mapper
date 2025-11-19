@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear B Diachronic Phonological Mapper</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Linear+B&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Linear B Diachronic Phonological Mapper</h1>
+            <p class="subtitle">Trace the evolution from Mycenaean to Classical Greek (1450-400 BCE)</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-group">
+                    <label for="linearb-input">Linear B Text</label>
+                    <textarea id="linearb-input" placeholder="Paste Linear B Unicode here: 𐀷𐀙𐀏"></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button id="analyze-btn" class="btn-primary">Analyze</button>
+                    <button id="clear-btn" class="btn-secondary">Clear</button>
+                </div>
+
+                <!-- Example buttons -->
+                <div class="examples">
+                    <p>Examples:</p>
+                    <button class="example-btn" data-text="𐀷𐀙𐀏">wa-na-ka (king)</button>
+                    <button class="example-btn" data-text="𐀡𐀴𐀛𐀊">po-ti-ni-ja (goddess)</button>
+                    <button class="example-btn" data-text="𐀳𐀃">te-o (god)</button>
+                    <button class="example-btn" data-text="𐀏𐀒">ka-ko (bronze)</button>
+                </div>
+
+                <div class="syllabary-panel">
+                     <h3>Linear B Syllabary (Click to insert)</h3>
+                     <div id="syllabary-grid" class="syllabary-grid"></div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="results" style="display: none;">
+                <h2>Analysis Results</h2>
+                <div id="results-container"></div>
+            </section>
+
+            <!-- Lexicon Browser -->
+            <section class="lexicon-section">
+                <h2>Lexicon Browser</h2>
+                <button id="load-lexicon-btn" class="btn-secondary">Load Full Lexicon</button>
+                <div id="lexicon-container" style="display: none;"></div>
+            </section>
+
+            <!-- Sound Changes Reference -->
+            <section class="reference-section">
+                <h2>Phonological Changes Reference</h2>
+                <button id="load-changes-btn" class="btn-secondary">Show Sound Changes</button>
+                <div id="changes-container" style="display: none;"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with Python, Flask, and computational linguistics | Data: Ventris & Chadwick (1956), Palaeolexicon</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
