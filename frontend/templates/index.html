@@ -6,6 +6,7 @@
     <title>Linear B Diachronic Phonological Mapper</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Linear+B&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -68,6 +69,8 @@
         </footer>
     </div>
 
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <script src="{{ url_for('static', filename='js/mapper.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </body>
 </html>

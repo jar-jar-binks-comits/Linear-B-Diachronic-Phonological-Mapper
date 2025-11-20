@@ -15,18 +15,19 @@ from core.tokenizer import LinearBTokenizer
 from core.transcriber import LinearBTranscriber
 from core.morphology import MorphologicalAnalyzer
 from core.phonology import PhonologyEngine
+from core.generator import ParadigmGenerator
 
 app = Flask(__name__, 
             template_folder='../frontend/templates',
             static_folder='../frontend/static')
 CORS(app)
 
-# Initialize engines
+# Initialise engines
 tokenizer = LinearBTokenizer()
 transcriber = LinearBTranscriber(data_dir='data')
 morphology = MorphologicalAnalyzer(data_dir='data')
 phonology = PhonologyEngine(data_dir='data')
-
+generator = ParadigmGenerator(data_dir='data')
 
 @app.route('/')
 def index():
@@ -243,12 +244,101 @@ def health():
             'tokenizer': True,
             'transcriber': True,
             'morphology': True,
-            'phonology': True
+            'phonology': True,
+            'generator': True
         },
         'lexicon_size': len(morphology.lexicon),
         'sound_rules': len(phonology.rules)
     })
 
+@app.route('/api/generate', methods=['POST'])
+def generate_paradigm():
+    """
+    Generate complete inflectional paradigm
+    
+    Request: {
+        "stem": "theo",
+        "pos": "noun",
+        "declension": "o_stem_masculine",
+        "gender": "masculine"
+    }
+    Response: {
+        "forms": [...],
+        "total": 24,
+        "attested": 2
+    }
+    """
+    data = request.get_json()
+    stem = data.get('stem', '')
+    pos = data.get('pos', 'noun')
+    
+    if not stem:
+        return jsonify({'error': 'No stem provided'}), 400
+    
+    # Generate paradigm
+    result = generator.generate_all_forms(
+        stem=stem,
+        pos=pos,
+        declension=data.get('declension', 'o_stem_masculine'),
+        gender=data.get('gender', 'masculine'),
+        attested_forms=data.get('attested_forms', [])
+    )
+    
+    # Flatten and count
+    all_forms = []
+    for form_list in result.values():
+        all_forms.extend([f.to_dict() for f in form_list])
+    
+    attested_count = sum(1 for f in all_forms if f['attested'])
+    
+    return jsonify({
+        'stem': stem,
+        'pos': pos,
+        'forms': all_forms,
+        'total': len(all_forms),
+        'attested': attested_count,
+        'coverage': f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"
+    })
+
+@app.route('/api/generate/<word>', methods=['GET'])
+def generate_from_lexicon(word):
+    """
+    Generate paradigm for word in lexicon
+    
+    Example: GET /api/generate/wa-na-ka
+    """
+    # Look up in lexicon
+    if word not in morphology.lexicon:
+        return jsonify({'error': 'Word not in lexicon'}), 404
+    
+    word_data = morphology.lexicon[word]
+    stem = word_data.get('stem', word.replace('-', ''))
+    pos = word_data.get('pos', 'noun')
+    
+    result = generator.generate_all_forms(
+        stem=stem,
+        pos=pos,
+        declension=word_data.get('declension', 'o_stem_masculine'),
+        gender=word_data.get('gender', 'masculine'),
+        attested_forms=word_data.get('attested_forms', [word])
+    )
+    
+    all_forms = []
+    for form_list in result.values():
+        all_forms.extend([f.to_dict() for f in form_list])
+    
+    return jsonify({
+        'word': word,
+        'lemma_data': word_data,
+        'generated_paradigm': all_forms,
+        'total_forms': len(all_forms)
+    })
+
+@app.route('/api/export/<format>', methods=['POST'])
+def export_analysis(format):
+    """Export as JSON, CSV, or BibTeX citation"""
+    # format: 'json', 'csv', 'bibtex'
+    pass
 
 if __name__ == '__main__':
     print("="*70)

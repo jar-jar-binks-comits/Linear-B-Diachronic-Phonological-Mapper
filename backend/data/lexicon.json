@@ -9,9 +9,9 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "consonant_stem",
-      "etymology": "From PIE *wen- 'to desire, strive for' + agent suffix",
-      "sound_changes": ["loss of initial digamma", "final *-ks > -x"],
-      "attested_forms": ["wa-na-ka", "wa-na-ka-te", "wa-na-ka-to"]
+      "etymology": "PIE *wen- 'to desire, strive for' + agent suffix",
+      "sound_changes": ["loss of initial digamma", "final stop loss"],
+      "attestations": ["Knossos", "Pylos", "Mycenae"]
     },
     "wa-na-ka-te": {
       "stem": "wanak",
@@ -23,6 +23,19 @@
       "number": "singular",
       "declension": "consonant_stem"
     },
+    "ra-wa-ke-ta": {
+      "stem": "lawaget",
+      "reconstruction": "lawagetas",
+      "classical_greek": "λαϝαγέτας",
+      "classical_transliteration": "lawagetas",
+      "meaning": "leader of the people, military commander",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "a_stem",
+      "etymology": "lawo- 'people' + agetas 'leader'",
+      "sound_changes": ["digamma loss"],
+      "attestations": ["Pylos", "Knossos"]
+    },
     "po-ti-ni-ja": {
       "stem": "potni",
       "reconstruction": "potnia",
@@ -32,9 +45,8 @@
       "pos": "noun",
       "gender": "feminine",
       "declension": "a_stem_feminine",
-      "etymology": "From PIE *poti- 'master' + feminine suffix",
-      "sound_changes": ["maintains archaic forms"],
-      "notes": "Common epithet for goddesses"
+      "etymology": "PIE *poti- 'master' + feminine suffix -ia",
+      "attestations": ["Knossos", "Pylos", "Thebes"]
     },
     "te-o": {
       "stem": "theo",
@@ -45,8 +57,18 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "o_stem_masculine",
-      "etymology": "From PIE *dheh₁s- 'to set, place' (divine powers)",
-      "attested_forms": ["te-o", "te-o-i"]
+      "etymology": "PIE *dheh₁s-",
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "te-o-i": {
+      "stem": "theo",
+      "reconstruction": "theoi",
+      "classical_greek": "θεοί",
+      "meaning": "gods (nominative/dative plural)",
+      "pos": "noun",
+      "case": "nominative",
+      "number": "plural",
+      "declension": "o_stem_masculine"
     },
     "do-e-ro": {
       "stem": "dohelo",
@@ -57,7 +79,8 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "o_stem_masculine",
-      "sound_changes": ["e > ou in Attic"]
+      "sound_changes": ["e > ou compensatory lengthening"],
+      "attestations": ["Pylos", "Knossos"]
     },
     "do-e-ra": {
       "stem": "dohela",
@@ -77,7 +100,7 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "o_stem_masculine",
-      "notes": "Central to Bronze Age economy"
+      "attestations": ["Knossos", "Pylos", "Mycenae"]
     },
     "a-re-pa": {
       "stem": "alepha",
@@ -85,7 +108,8 @@
       "classical_greek": "ἄλειφαρ",
       "meaning": "oil, unguent",
       "pos": "noun",
-      "etymology": "Related to ἀλείφω 'to anoint'"
+      "etymology": "Related to ἀλείφω 'to anoint'",
+      "attestations": ["Knossos"]
     },
     "e-re-u-te-ro": {
       "stem": "eleuthero",
@@ -93,7 +117,8 @@
       "classical_greek": "ἐλεύθερος",
       "meaning": "free (person)",
       "pos": "adjective",
-      "declension": "o_stem_masculine"
+      "declension": "o_stem_masculine",
+      "attestations": ["Pylos"]
     },
     "ko-wa": {
       "stem": "korwa",
@@ -104,16 +129,884 @@
       "pos": "noun",
       "gender": "feminine",
       "declension": "a_stem_feminine",
-      "sound_changes": ["loss of digamma: korwa > kore"]
+      "sound_changes": ["digamma loss: korwa > kore"],
+      "attestations": ["Pylos", "Knossos"]
     },
     "ko-wo": {
       "stem": "korwo",
       "reconstruction": "korwos",
-      "classical_greek": "κόρος/κοῦρος",
+      "classical_greek": "κοῦρος",
+      "classical_transliteration": "kouros",
       "meaning": "boy, youth",
       "pos": "noun",
       "gender": "masculine",
-      "declension": "o_stem_masculine"
+      "declension": "o_stem_masculine",
+      "sound_changes": ["digamma loss", "compensatory lengthening o > ou"]
+    },
+    "e-qe-ta": {
+      "stem": "heqwet",
+      "reconstruction": "hekʷetas",
+      "classical_greek": "ἑπέτας",
+      "meaning": "follower, companion, retainer",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "a_stem",
+      "etymology": "From *sekʷ- 'follow'",
+      "sound_changes": ["labiovelar kʷ > p"],
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "da-mo": {
+      "stem": "damo",
+      "reconstruction": "damos",
+      "classical_greek": "δῆμος",
+      "classical_transliteration": "demos",
+      "meaning": "people, district, land",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "etymology": "PIE *deh₂-mo- 'division'",
+      "sound_changes": ["compensatory lengthening a > ē"],
+      "attestations": ["Pylos"]
+    },
+    "pa-te": {
+      "stem": "pant",
+      "reconstruction": "pantes",
+      "classical_greek": "πάντες",
+      "meaning": "all (plural)",
+      "pos": "adjective",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    "o-wi-de": {
+      "stem": "owide",
+      "reconstruction": "owide",
+      "classical_greek": "οὐ ϝιδε",
+      "meaning": "does not see, is absent",
+      "pos": "verb",
+      "etymology": "negation ou + root *weid- 'see'",
+      "sound_changes": ["digamma retention in Mycenaean"]
+    },
+    "e-ke": {
+      "stem": "ekhe",
+      "reconstruction": "ekhei",
+      "classical_greek": "ἔχει",
+      "meaning": "has, holds",
+      "pos": "verb",
+      "tense": "present",
+      "person": "3rd",
+      "number": "singular"
+    },
+    "do-so-si": {
+      "stem": "do",
+      "reconstruction": "dosonsi",
+      "classical_greek": "δώσουσι",
+      "meaning": "they will give",
+      "pos": "verb",
+      "tense": "future",
+      "person": "3rd",
+      "number": "plural"
+    },
+    "o-pe-ro": {
+      "stem": "ophelo",
+      "reconstruction": "ophelō",
+      "classical_greek": "ὀφείλω",
+      "meaning": "I owe, ought",
+      "pos": "verb",
+      "attestations": ["Pylos"]
+    },
+    "a-pu": {
+      "stem": "apu",
+      "reconstruction": "apu",
+      "classical_greek": "ἀπό",
+      "meaning": "from, away from",
+      "pos": "preposition",
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "e-pi": {
+      "stem": "epi",
+      "reconstruction": "epi",
+      "classical_greek": "ἐπί",
+      "meaning": "on, upon, at",
+      "pos": "preposition",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "pa-ro": {
+      "stem": "paro",
+      "reconstruction": "paros",
+      "classical_greek": "πάρος",
+      "meaning": "before, formerly",
+      "pos": "adverb",
+      "attestations": ["Pylos"]
+    },
+    "me-ta": {
+      "stem": "meta",
+      "reconstruction": "meta",
+      "classical_greek": "μετά",
+      "meaning": "with, among, after",
+      "pos": "preposition",
+      "attestations": ["Knossos"]
+    },
+    "wo-ko": {
+      "stem": "worgo",
+      "reconstruction": "worgon",
+      "classical_greek": "ἔργον",
+      "classical_transliteration": "ergon",
+      "meaning": "work, deed",
+      "pos": "noun",
+      "gender": "neuter",
+      "declension": "o_stem",
+      "etymology": "PIE *werg- 'to work'",
+      "sound_changes": ["initial digamma loss"],
+      "attestations": ["Pylos"]
+    },
+    "we-to": {
+      "stem": "weto",
+      "reconstruction": "wetos",
+      "classical_greek": "ἔτος",
+      "meaning": "year",
+      "pos": "noun",
+      "gender": "neuter",
+      "sound_changes": ["initial digamma loss"],
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "to-so": {
+      "stem": "toso",
+      "reconstruction": "tosos",
+      "classical_greek": "τόσος",
+      "meaning": "so much, so many",
+      "pos": "demonstrative",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "o-no": {
+      "stem": "ono",
+      "reconstruction": "onos",
+      "classical_greek": "ὄνος",
+      "meaning": "donkey, ass",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Knossos"]
+    },
+    "i-qo": {
+      "stem": "ikwo",
+      "reconstruction": "ikʷos",
+      "classical_greek": "ἵππος",
+      "classical_transliteration": "hippos",
+      "meaning": "horse",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "etymology": "PIE *h₁eḱwos",
+      "sound_changes": ["labiovelar kʷ > pp"],
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "a-to-ro-qo": {
+      "stem": "anthropo",
+      "reconstruction": "anthrōkʷos",
+      "classical_greek": "ἄνθρωπος",
+      "meaning": "human, person",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Pylos"]
+    },
+    "ku-ru-so": {
+      "stem": "khryso",
+      "reconstruction": "khrusos",
+      "classical_greek": "χρυσός",
+      "meaning": "gold",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Knossos", "Pylos", "Mycenae"]
+    },
+    "a-ku-ro": {
+      "stem": "argyro",
+      "reconstruction": "argyros",
+      "classical_greek": "ἄργυρος",
+      "meaning": "silver",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Knossos"]
+    },
+    "si-to": {
+      "stem": "sito",
+      "reconstruction": "sitos",
+      "classical_greek": "σῖτος",
+      "meaning": "grain, wheat, food",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "o-no-to": {
+      "stem": "oinos",
+      "reconstruction": "oinos",
+      "classical_greek": "οἶνος",
+      "meaning": "wine",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "o_stem_masculine",
+      "attestations": ["Knossos"]
+    },
+    "me-ri": {
+      "stem": "meli",
+      "reconstruction": "meli",
+      "classical_greek": "μέλι",
+      "meaning": "honey",
+      "pos": "noun",
+      "gender": "neuter",
+      "etymology": "PIE *melit-",
+      "attestations": ["Knossos"]
+    },
+    "e-ra-wa": {
+      "stem": "elaiwa",
+      "reconstruction": "elaiwa",
+      "classical_greek": "ἐλαία/ἔλαιον",
+      "meaning": "olive, olive oil",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine",
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "ke-ra-me-u": {
+      "stem": "kerameu",
+      "reconstruction": "kerameus",
+      "classical_greek": "κεραμεύς",
+      "meaning": "potter",
+      "pos": "noun",
+      "gender": "masculine",
+      "etymology": "From keramos 'clay'",
+      "attestations": ["Pylos"]
+    },
+    "ka-ke-u": {
+      "stem": "khalkeu",
+      "reconstruction": "khalkeus",
+      "classical_greek": "χαλκεύς",
+      "meaning": "bronze-smith, metal-worker",
+      "pos": "noun",
+      "gender": "masculine",
+      "etymology": "From khalkos 'bronze'",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "di-wi-jo": {
+      "stem": "diwijo",
+      "reconstruction": "diwios",
+      "classical_greek": "Δῖος",
+      "meaning": "of Zeus, divine",
+      "pos": "adjective",
+      "etymology": "PIE *dyew- 'sky god'",
+      "attestations": ["Knossos", "Pylos"]
+    },
+    "po-se-da-o": {
+      "stem": "posedao",
+      "reconstruction": "Poseidāwōn",
+      "classical_greek": "Ποσειδῶν",
+      "classical_transliteration": "Poseidon",
+      "meaning": "Poseidon (god)",
+      "pos": "proper noun",
+      "gender": "masculine",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "a-ta-na": {
+      "stem": "Athana",
+      "reconstruction": "Athānā",
+      "classical_greek": "Ἀθηνᾶ",
+      "classical_transliteration": "Athena",
+      "meaning": "Athena (goddess)",
+      "pos": "proper noun",
+      "gender": "feminine",
+      "attestations": ["Knossos"]
+    },
+    "di-wo": {
+      "stem": "diwo",
+      "reconstruction": "diwos",
+      "classical_greek": "Διός",
+      "meaning": "of Zeus (genitive)",
+      "pos": "proper noun",
+      "case": "genitive",
+      "attestations": ["Pylos"]
+    },
+    "e-ma-a2": {
+      "stem": "hema",
+      "reconstruction": "hēmar",
+      "classical_greek": "ἦμαρ",
+      "meaning": "day",
+      "pos": "noun",
+      "gender": "neuter",
+      "attestations": ["Pylos"]
+    },
+    "me-no": {
+      "stem": "mēno",
+      "reconstruction": "mēnos",
+      "classical_greek": "μήν",
+      "meaning": "month",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "consonant_stem",
+      "attestations": ["Knossos"]
+    },
+    "nu-ko": {
+      "stem": "nyks",
+      "reconstruction": "nuks",
+      "classical_greek": "νύξ",
+      "meaning": "night",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "consonant_stem",
+      "attestations": ["Pylos"]
+    },
+    "a-mo": {
+      "stem": "harmo",
+      "reconstruction": "harma",
+      "classical_greek": "ἅρμα",
+      "meaning": "chariot",
+      "pos": "noun",
+      "gender": "neuter",
+      "etymology": "PIE *h₂er-",
+      "attestations": ["Knossos"]
+    },
+    "po-de": {
+      "stem": "pode",
+      "reconstruction": "podes",
+      "classical_greek": "πόδες",
+      "meaning": "feet (plural)",
+      "pos": "noun",
+      "case": "nominative",
+      "number": "plural",
+      "declension": "consonant_stem"
+    },
+        "di-do-si": {
+      "stem": "dido",
+      "reconstruction": "didonsi",
+      "classical_greek": "διδοῦσι",
+      "classical_transliteration": "didousi",
+      "meaning": "they give",
+      "pos": "verb",
+      "tense": "present",
+      "person": "3rd",
+      "number": "plural",
+      "etymology": "PIE *deh₃- 'to give'",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "e-ke-e": {
+      "stem": "ekhe",
+      "reconstruction": "ekheē",
+      "classical_greek": "ἔχῃ",
+      "meaning": "may have (subjunctive)",
+      "pos": "verb",
+      "tense": "present subjunctive",
+      "person": "3rd",
+      "number": "singular",
+      "attestations": ["Pylos"]
+    },
+    "a-pe-do-ke": {
+      "stem": "apedoke",
+      "reconstruction": "apedōke",
+      "classical_greek": "ἀπέδωκε",
+      "meaning": "gave back, delivered",
+      "pos": "verb",
+      "tense": "aorist",
+      "person": "3rd",
+      "number": "singular",
+      "attestations": ["Pylos"]
+    },
+    "o-pe-ro-si": {
+      "stem": "ophelo",
+      "reconstruction": "ophelonsi",
+      "classical_greek": "ὀφείλουσι",
+      "meaning": "they owe",
+      "pos": "verb",
+      "tense": "present",
+      "person": "3rd",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    "e-ko-si": {
+      "stem": "ekho",
+      "reconstruction": "ekhonsi",
+      "classical_greek": "ἔχουσι",
+      "meaning": "they have",
+      "pos": "verb",
+      "tense": "present",
+      "person": "3rd",
+      "number": "plural",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "a-pu-do-si": {
+      "stem": "apudosi",
+      "reconstruction": "apudonsi",
+      "classical_greek": "ἀποδίδουσι",
+      "meaning": "they give back, pay",
+      "pos": "verb",
+      "tense": "present",
+      "attestations": ["Pylos"]
+    },
+    
+    "e-ne-wo": {
+      "stem": "ennewo",
+      "reconstruction": "ennewos",
+      "classical_greek": "ἐννέα",
+      "meaning": "nine",
+      "pos": "numeral",
+      "etymology": "PIE *h₁néwn̥",
+      "sound_changes": ["digamma loss"],
+      "attestations": ["Knossos"]
+    },
+    "de-ka": {
+      "stem": "deka",
+      "reconstruction": "deka",
+      "classical_greek": "δέκα",
+      "meaning": "ten",
+      "pos": "numeral",
+      "attestations": ["Pylos", "Knossos", "Mycenae"]
+    },
+    "wi-ka-ti": {
+      "stem": "wikati",
+      "reconstruction": "wikati",
+      "classical_greek": "ϝίκατι",
+      "meaning": "twenty",
+      "pos": "numeral",
+      "sound_changes": ["digamma loss"],
+      "attestations": ["Knossos"]
+    },
+    "to-so": {
+      "stem": "toso",
+      "reconstruction": "tossos",
+      "classical_greek": "τόσσος",
+      "meaning": "so much, so many",
+      "pos": "demonstrative numeral",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "po-so": {
+      "stem": "poso",
+      "reconstruction": "possos",
+      "classical_greek": "πόσσος",
+      "meaning": "how much, how many",
+      "pos": "interrogative numeral",
+      "attestations": ["Pylos"]
+    },
+    
+    "te-ko-to-ne": {
+      "stem": "tekton",
+      "reconstruction": "tektones",
+      "classical_greek": "τέκτονες",
+      "meaning": "carpenters, builders",
+      "pos": "noun",
+      "gender": "masculine",
+      "number": "plural",
+      "declension": "consonant_stem",
+      "attestations": ["Pylos"]
+    },
+    "ra-pi-ti-ra": {
+      "stem": "rhaptri",
+      "reconstruction": "rhaptria",
+      "classical_greek": "ῥάπτρια",
+      "meaning": "seamstress",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine",
+      "attestations": ["Pylos"]
+    },
+    "ke-ra-me-u": {
+      "stem": "kerameu",
+      "reconstruction": "kerameus",
+      "classical_greek": "κεραμεύς",
+      "meaning": "potter",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "u_stem",
+      "etymology": "From keramos 'clay'",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "ka-ke-we": {
+      "stem": "khalkew",
+      "reconstruction": "khalkēwes",
+      "classical_greek": "χαλκεῖς/χαλκέες",
+      "meaning": "bronze-smiths, metalworkers",
+      "pos": "noun",
+      "gender": "masculine",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    "to-ko-so-wo-ko": {
+      "stem": "toksoworg",
+      "reconstruction": "toksoworgos",
+      "classical_greek": "τοξοϝοργός",
+      "meaning": "bow-maker",
+      "pos": "noun",
+      "gender": "masculine",
+      "sound_changes": ["digamma loss"],
+      "attestations": ["Pylos"]
+    },
+    "na-wi-jo": {
+      "stem": "nāwijo",
+      "reconstruction": "nāwios",
+      "classical_greek": "ναύϝιος",
+      "meaning": "of ships, naval",
+      "pos": "adjective",
+      "sound_changes": ["digamma loss"],
+      "attestations": ["Pylos"]
+    },
+    
+    "i-je-re-u": {
+      "stem": "hiereu",
+      "reconstruction": "hiereus",
+      "classical_greek": "ἱερεύς",
+      "meaning": "priest",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "u_stem",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "i-je-re-ja": {
+      "stem": "hierej",
+      "reconstruction": "hiereia",
+      "classical_greek": "ἱέρεια",
+      "meaning": "priestess",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "a_stem_feminine",
+      "attestations": ["Pylos", "Knossos"]
+    },
+    "di-u-ja": {
+      "stem": "diwij",
+      "reconstruction": "diwiā",
+      "classical_greek": "Δῖα",
+      "meaning": "of Zeus, divine (feminine)",
+      "pos": "adjective",
+      "gender": "feminine",
+      "etymology": "PIE *dyew-",
+      "attestations": ["Knossos"]
+    },
+    "a-re": {
+      "stem": "Are",
+      "reconstruction": "Arēs",
+      "classical_greek": "Ἄρης",
+      "classical_transliteration": "Ares",
+      "meaning": "Ares (god of war)",
+      "pos": "proper noun",
+      "gender": "masculine",
+      "attestations": ["Knossos"]
+    },
+    "e-nu-wa-ri-jo": {
+      "stem": "enywalio",
+      "reconstruction": "Enywalios",
+      "classical_greek": "Ἐνυάλιος",
+      "meaning": "Enyalios (epithet of Ares)",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    "ma-te-re": {
+      "stem": "māter",
+      "reconstruction": "mātēr",
+      "classical_greek": "μήτηρ",
+      "meaning": "mother",
+      "pos": "noun",
+      "gender": "feminine",
+      "declension": "r_stem",
+      "etymology": "PIE *méh₂tēr",
+      "attestations": ["Pylos"]
+    },
+    "te-i-ja": {
+      "stem": "theij",
+      "reconstruction": "theiā",
+      "classical_greek": "θεία",
+      "meaning": "goddess, divine (feminine)",
+      "pos": "noun",
+      "gender": "feminine",
+      "attestations": ["Knossos"]
+    },
+    
+    "ku-do-ni-ja": {
+      "stem": "Kudōnij",
+      "reconstruction": "Kudōniā",
+      "classical_greek": "Κυδωνία",
+      "meaning": "Kydonia (city in western Crete)",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    "pu-ro": {
+      "stem": "Pulo",
+      "reconstruction": "Pulos",
+      "classical_greek": "Πύλος",
+      "meaning": "Pylos",
+      "pos": "proper noun",
+      "attestations": ["Pylos"]
+    },
+    "ku-no-so": {
+      "stem": "Knōso",
+      "reconstruction": "Knōsos",
+      "classical_greek": "Κνωσός",
+      "meaning": "Knossos",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    "a-mi-ni-so": {
+      "stem": "Amniso",
+      "reconstruction": "Amnisos",
+      "classical_greek": "Ἀμνισός",
+      "meaning": "Amnissos (port of Knossos)",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    "pa-i-to": {
+      "stem": "Phaisto",
+      "reconstruction": "Phaistos",
+      "classical_greek": "Φαιστός",
+      "meaning": "Phaistos (city in Crete)",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    "ru-ki-to": {
+      "stem": "Lukto",
+      "reconstruction": "Luktos",
+      "classical_greek": "Λύκτος",
+      "meaning": "Lyktos (city in Crete)",
+      "pos": "proper noun",
+      "attestations": ["Knossos"]
+    },
+    
+    "me-zo": {
+      "stem": "medzo",
+      "reconstruction": "medzōn",
+      "classical_greek": "μείζων",
+      "meaning": "greater, larger",
+      "pos": "adjective",
+      "degree": "comparative",
+      "attestations": ["Pylos"]
+    },
+    "me-wi-jo": {
+      "stem": "mewijo",
+      "reconstruction": "mewiōn",
+      "classical_greek": "μείων",
+      "meaning": "smaller, less",
+      "pos": "adjective",
+      "degree": "comparative",
+      "attestations": ["Pylos"]
+    },
+    "pa-ka-na": {
+      "stem": "phargana",
+      "reconstruction": "pharganon",
+      "classical_greek": "φάσγανον",
+      "meaning": "sword",
+      "pos": "noun",
+      "gender": "neuter",
+      "attestations": ["Knossos"]
+    },
+    "to-ra-ka": {
+      "stem": "thōrāk",
+      "reconstruction": "thōrāks",
+      "classical_greek": "θώραξ",
+      "meaning": "breastplate, cuirass",
+      "pos": "noun",
+      "gender": "masculine",
+      "attestations": ["Knossos"]
+    },
+    "ka-ru-ke": {
+      "stem": "kāruke",
+      "reconstruction": "kārukes",
+      "classical_greek": "κήρυκες",
+      "meaning": "heralds",
+      "pos": "noun",
+      "gender": "masculine",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    
+    "a-ro-a": {
+      "stem": "arouā",
+      "reconstruction": "arourā",
+      "classical_greek": "ἄρουρα",
+      "meaning": "arable land, plowland",
+      "pos": "noun",
+      "gender": "feminine",
+      "attestations": ["Pylos"]
+    },
+    "ki-ti-me-na": {
+      "stem": "ktimenā",
+      "reconstruction": "ktimenā",
+      "classical_greek": "κτίμενα",
+      "meaning": "built land, settled land",
+      "pos": "adjective",
+      "gender": "neuter",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    "ke-ke-me-na": {
+      "stem": "kekemenā",
+      "reconstruction": "kekemenā",
+      "classical_greek": "κείμενα",
+      "meaning": "lying (land), parcels",
+      "pos": "participle",
+      "attestations": ["Pylos"]
+    },
+    "ko-to-na": {
+      "stem": "ktoina",
+      "reconstruction": "ktoinā",
+      "classical_greek": "χθοῖνα",
+      "meaning": "plot of land",
+      "pos": "noun",
+      "gender": "feminine",
+      "sound_changes": ["kt > kht (aspiration)"],
+      "attestations": ["Pylos"]
+    },
+    "re-u-ko": {
+      "stem": "leuко",
+      "reconstruction": "leukos",
+      "classical_greek": "λευκός",
+      "meaning": "white, bright",
+      "pos": "adjective",
+      "attestations": ["Knossos"]
+    },
+    "me-ri-to": {
+      "stem": "melit",
+      "reconstruction": "melitos",
+      "classical_greek": "μέλιτος",
+      "meaning": "of honey (genitive)",
+      "pos": "noun",
+      "case": "genitive",
+      "attestations": ["Knossos"]
+    },
+    "mo-ro": {
+      "stem": "moiro",
+      "reconstruction": "moira",
+      "classical_greek": "μοῖρα",
+      "meaning": "portion, share, lot",
+      "pos": "noun",
+      "gender": "feminine",
+      "attestations": ["Pylos"]
+    },
+    
+    "tu-ka-te-re": {
+      "stem": "thugater",
+      "reconstruction": "thugateres",
+      "classical_greek": "θυγατέρες",
+      "meaning": "daughters",
+      "pos": "noun",
+      "gender": "feminine",
+      "number": "plural",
+      "declension": "r_stem",
+      "etymology": "PIE *dhugh₂tḗr",
+      "attestations": ["Pylos"]
+    },
+    "pa-te-re": {
+      "stem": "pater",
+      "reconstruction": "patēr",
+      "classical_greek": "πατήρ",
+      "meaning": "father",
+      "pos": "noun",
+      "gender": "masculine",
+      "declension": "r_stem",
+      "etymology": "PIE *ph₂tḗr",
+      "attestations": ["Knossos"]
+    },
+    "a-de-re-u": {
+      "stem": "andreu",
+      "reconstruction": "andreus",
+      "classical_greek": "ἀνδρεύς",
+      "meaning": "man, male person",
+      "pos": "noun",
+      "gender": "masculine",
+      "attestations": ["Pylos"]
+    },
+    "ku-na": {
+      "stem": "kuōn",
+      "reconstruction": "kunā",
+      "classical_greek": "κύνα/κυνός",
+      "meaning": "dog (accusative)",
+      "pos": "noun",
+      "gender": "masculine/feminine",
+      "case": "accusative",
+      "declension": "consonant_stem",
+      "attestations": ["Knossos"]
+    },
+    
+    "pi-ri-je-te-re": {
+      "stem": "prēgēter",
+      "reconstruction": "prēgeteres",
+      "classical_greek": "πριγηίτερες",
+      "meaning": "sawyers, woodcutters",
+      "pos": "noun",
+      "number": "plural",
+      "attestations": ["Pylos"]
+    },
+    "o-ka": {
+      "stem": "woka",
+      "reconstruction": "woikā",
+      "classical_greek": "οἰκία",
+      "meaning": "house, dwelling",
+      "pos": "noun",
+      "gender": "feminine",
+      "sound_changes": ["initial digamma loss"],
+      "attestations": ["Pylos"]
+    },
+    "do-mo": {
+      "stem": "domo",
+      "reconstruction": "domos",
+      "classical_greek": "δόμος",
+      "meaning": "house, building",
+      "pos": "noun",
+      "gender": "masculine",
+      "attestations": ["Pylos"]
+    },
+    "to-pe-za": {
+      "stem": "torpedz",
+      "reconstruction": "torpedzā",
+      "classical_greek": "τράπεζα",
+      "meaning": "table",
+      "pos": "noun",
+      "gender": "feminine",
+      "sound_changes": ["metathesis: torped > traped"],
+      "attestations": ["Pylos"]
+    },
+    
+    "qi-si-pe-e": {
+      "stem": "ksiphe",
+      "reconstruction": "ksiphē",
+      "classical_greek": "ξίφη",
+      "meaning": "swords (plural)",
+      "pos": "noun",
+      "gender": "neuter",
+      "number": "plural",
+      "attestations": ["Knossos"]
+    },
+    "a-ni-ja": {
+      "stem": "hanij",
+      "reconstruction": "hāniā",
+      "classical_greek": "ἡνία",
+      "meaning": "reins, bridle",
+      "pos": "noun",
+      "gender": "neuter",
+      "number": "plural",
+      "attestations": ["Knossos"]
+    },
+    "po-ni-ki-ja": {
+      "stem": "poinikij",
+      "reconstruction": "poinikiā",
+      "classical_greek": "φοινικίς",
+      "meaning": "purple, crimson",
+      "pos": "adjective",
+      "gender": "feminine",
+      "attestations": ["Knossos"]
+    },
+    "ku-te-so": {
+      "stem": "kutheso",
+      "reconstruction": "kuthesos",
+      "classical_greek": "κύθησος",
+      "meaning": "jar, vessel",
+      "pos": "noun",
+      "attestations": ["Knossos"]
+    },
+    "o-to": {
+      "stem": "oto",
+      "reconstruction": "ōta",
+      "classical_greek": "ὦτα",
+      "meaning": "ears (dual)",
+      "pos": "noun",
+      "gender": "neuter",
+      "number": "dual"
     }
   },
   "common_endings": {
