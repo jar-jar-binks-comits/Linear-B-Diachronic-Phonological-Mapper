@@ -1,18 +1,25 @@
 {
   "words": {
     "wa-na-ka": {
-      "stem": "wanak",
-      "reconstruction": "wanaks",
-      "classical_greek": "ἄναξ",
-      "classical_transliteration": "anax",
-      "meaning": "king, lord, ruler",
-      "pos": "noun",
-      "gender": "masculine",
-      "declension": "consonant_stem",
-      "etymology": "PIE *wen- 'to desire, strive for' + agent suffix",
-      "sound_changes": ["loss of initial digamma", "final stop loss"],
-      "attestations": ["Knossos", "Pylos", "Mycenae"]
+    "stem": "wanak",
+    "reconstruction": "wanaks",
+    "classical_greek": "ἄναξ",
+    "classical_transliteration": "anax",
+    "meaning": "king, lord, ruler",
+    "pos": "noun",
+    "gender": "masculine",
+    "declension": "consonant_stem",
+    "pie_root": "*wen-",
+    "pie_meaning": "to desire, strive for",
+    "cognates": {
+        "latin": "venus (desire, love)",
+        "sanskrit": "vanati (desires)",
+        "old_norse": "vinr (friend)"
     },
+    "etymology": "PIE *wen- 'to desire' + agent suffix *-akt-",
+    "sound_changes": ["loss of initial digamma", "final stop loss"],
+    "attestations": ["Knossos", "Pylos", "Mycenae"]
+},
     "wa-na-ka-te": {
       "stem": "wanak",
       "reconstruction": "wanaktei",
@@ -57,7 +64,12 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "o_stem_masculine",
-      "etymology": "PIE *dheh₁s-",
+      "pie_root": "*dheh₁s-",
+      "pie_meaning": "to do, make (religious sense)",
+      "cognates": {
+         "latin": "fēriae (holidays), fānum (temple)",
+         "armenian": "dik' (gods)"
+      },
       "attestations": ["Knossos", "Pylos"]
     },
     "te-o-i": {
@@ -269,14 +281,6 @@
       "sound_changes": ["initial digamma loss"],
       "attestations": ["Knossos", "Pylos"]
     },
-    "to-so": {
-      "stem": "toso",
-      "reconstruction": "tosos",
-      "classical_greek": "τόσος",
-      "meaning": "so much, so many",
-      "pos": "demonstrative",
-      "attestations": ["Pylos", "Knossos"]
-    },
     "o-no": {
       "stem": "ono",
       "reconstruction": "onos",
@@ -296,7 +300,14 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "o_stem_masculine",
-      "etymology": "PIE *h₁eḱwos",
+      "pie_root": "h₁éḱwos",
+      "pie_meaning": "horse",
+      "cognates": {
+        "latin": "equus",
+        "sanskrit": "áśva",
+        "old_english": "eoh",
+        "gaulish": "epos"
+    },
       "sound_changes": ["labiovelar kʷ > pp"],
       "attestations": ["Knossos", "Pylos"]
     },
@@ -369,16 +380,6 @@
       "gender": "feminine",
       "declension": "a_stem_feminine",
       "attestations": ["Knossos", "Pylos"]
-    },
-    "ke-ra-me-u": {
-      "stem": "kerameu",
-      "reconstruction": "kerameus",
-      "classical_greek": "κεραμεύς",
-      "meaning": "potter",
-      "pos": "noun",
-      "gender": "masculine",
-      "etymology": "From keramos 'clay'",
-      "attestations": ["Pylos"]
     },
     "ka-ke-u": {
       "stem": "khalkeu",
@@ -477,7 +478,7 @@
       "number": "plural",
       "declension": "consonant_stem"
     },
-        "di-do-si": {
+    "di-do-si": {
       "stem": "dido",
       "reconstruction": "didonsi",
       "classical_greek": "διδοῦσι",
@@ -543,7 +544,6 @@
       "tense": "present",
       "attestations": ["Pylos"]
     },
-    
     "e-ne-wo": {
       "stem": "ennewo",
       "reconstruction": "ennewos",
@@ -587,7 +587,6 @@
       "pos": "interrogative numeral",
       "attestations": ["Pylos"]
     },
-    
     "te-ko-to-ne": {
       "stem": "tekton",
       "reconstruction": "tektones",
@@ -649,7 +648,6 @@
       "sound_changes": ["digamma loss"],
       "attestations": ["Pylos"]
     },
-    
     "i-je-re-u": {
       "stem": "hiereu",
       "reconstruction": "hiereus",
@@ -706,8 +704,15 @@
       "pos": "noun",
       "gender": "feminine",
       "declension": "r_stem",
-      "etymology": "PIE *méh₂tēr",
-      "attestations": ["Pylos"]
+      "pie_root": "*méh₂tēr",
+      "pie_meaning": "mother",
+       "cognates": {
+        "latin": "māter",
+        "sanskrit": "mātṛ",
+        "old_english": "mōdor",
+        "old_irish": "máthir"
+    },
+    "attestations": ["Pylos"]
     },
     "te-i-ja": {
       "stem": "theij",
@@ -718,7 +723,6 @@
       "gender": "feminine",
       "attestations": ["Knossos"]
     },
-    
     "ku-do-ni-ja": {
       "stem": "Kudōnij",
       "reconstruction": "Kudōniā",
@@ -767,7 +771,6 @@
       "pos": "proper noun",
       "attestations": ["Knossos"]
     },
-    
     "me-zo": {
       "stem": "medzo",
       "reconstruction": "medzōn",
@@ -814,7 +817,6 @@
       "number": "plural",
       "attestations": ["Pylos"]
     },
-    
     "a-ro-a": {
       "stem": "arouā",
       "reconstruction": "arourā",
@@ -878,7 +880,6 @@
       "gender": "feminine",
       "attestations": ["Pylos"]
     },
-    
     "tu-ka-te-re": {
       "stem": "thugater",
       "reconstruction": "thugateres",
@@ -899,7 +900,14 @@
       "pos": "noun",
       "gender": "masculine",
       "declension": "r_stem",
-      "etymology": "PIE *ph₂tḗr",
+      "pie_root": "*ph₂tḗr",
+      "pie_meaning": "father",
+      "cognates": {
+         "latin": "pater",
+         "sanskrit": "pitṛ",
+         "gothic": "fadar",
+         "old_irish": "athir"
+      },
       "attestations": ["Knossos"]
     },
     "a-de-re-u": {
@@ -920,9 +928,16 @@
       "gender": "masculine/feminine",
       "case": "accusative",
       "declension": "consonant_stem",
+      "pie_root": "*ḱwṓn",
+      "pie_eaming": "dog",
+      "cognates": {
+        "latin": "canis",
+        "sanskrit": "śvā",
+        "old_english": "hund",
+        "old_irish": "cú"
+      },
       "attestations": ["Knossos"]
     },
-    
     "pi-ri-je-te-re": {
       "stem": "prēgēter",
       "reconstruction": "prēgeteres",
@@ -961,7 +976,6 @@
       "sound_changes": ["metathesis: torped > traped"],
       "attestations": ["Pylos"]
     },
-    
     "qi-si-pe-e": {
       "stem": "ksiphe",
       "reconstruction": "ksiphē",

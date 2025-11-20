@@ -13,6 +13,12 @@ const lexiconContainer = document.getElementById('lexicon-container');
 const loadChangesBtn = document.getElementById('load-changes-btn');
 const changesContainer = document.getElementById('changes-container');
 
+// Paradigm elements
+const paradigmSection = document.getElementById('paradigm-section');
+const paradigmWord = document.getElementById('paradigm-word');
+const generateParadigmBtn = document.getElementById('generate-paradigm-btn');
+const paradigmResults = document.getElementById('paradigm-results');
+
 // Global mapper instance
 let diachronicMapper = null;
 
@@ -27,6 +33,10 @@ exampleBtns.forEach(btn => {
 });
 loadLexiconBtn.addEventListener('click', loadLexicon);
 loadChangesBtn.addEventListener('click', loadSoundChanges);
+
+if (generateParadigmBtn) {
+    generateParadigmBtn.addEventListener('click', generateParadigm);
+}
 
 inputTextarea.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
@@ -45,7 +55,7 @@ async function analyzeText() {
     }
     
     analyzeBtn.classList.add('loading');
-    analyzeBtn.textContent = 'Analyzing';
+    analyzeBtn.textContent = 'Analyzing...';
     
     try {
         const response = await fetch(`${API_BASE}/full_analysis`, {
@@ -62,7 +72,7 @@ async function analyzeText() {
     } catch (error) {
         console.error('Analysis error:', error);
         resultsContainer.innerHTML = `
-            <div style="padding: 2rem; text-align: center; color: #c0392b;">
+            <div style="padding: 2rem; text-align: center; color: var(--red);">
                 <h3>Analysis Failed</h3>
                 <p>Please check your input and try again.</p>
             </div>
@@ -84,9 +94,7 @@ function displayResults(results) {
         return;
     }
     
-    // Process each word
     results.forEach((word, index) => {
-        // Create two-column layout container
         const resultWrapper = document.createElement('div');
         resultWrapper.className = 'result-wrapper';
         
@@ -95,7 +103,7 @@ function displayResults(results) {
         analysisColumn.className = 'analysis-column';
         
         // Word Header
-        const headerHTML = `
+        let html = `
             <div class="word-header">
                 <span class="linear-b-text">${word.original}</span>
                 <div class="transliteration-group">
@@ -105,12 +113,11 @@ function displayResults(results) {
             </div>
         `;
         
-        // Analysis Cards Grid
-        let cardsHTML = '<div class="analysis-grid">';
+        html += '<div class="analysis-grid">';
         
         // Morphology Card
         if (word.morphology) {
-            cardsHTML += `
+            html += `
                 <div class="analysis-card morphology-card">
                     <h4>📐 Morphological Analysis</h4>
                     <div class="card-content">
@@ -148,7 +155,7 @@ function displayResults(results) {
         
         // Classical Greek Card
         if (word.diachronic) {
-            cardsHTML += `
+            html += `
                 <div class="analysis-card classical-card">
                     <h4>🏛️ Classical Greek</h4>
                     <div class="card-content">
@@ -160,11 +167,30 @@ function displayResults(results) {
                     </div>
                 </div>
             `;
+            
+            // PIE Etymology Card
+            if (word.diachronic.pie_root) {
+                html += `
+                    <div class="analysis-card pie-card">
+                        <h4>🌳 Proto-Indo-European</h4>
+                        <div class="card-content">
+                            <div class="pie-root">${word.diachronic.pie_root}</div>
+                            ${word.diachronic.pie_meaning ? `<div class="pie-meaning">"${word.diachronic.pie_meaning}"</div>` : ''}
+                            ${word.diachronic.cognates ? `
+                            <div class="cognates">
+                                <strong>Cognates:</strong>
+                                ${Object.entries(word.diachronic.cognates).map(([lang, form]) => 
+                                    `<span class="cognate"><em>${lang}:</em> ${form}</span>`
+                                ).join('')}
+                            </div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }
         }
         
-        cardsHTML += '</div>';
-        
-        analysisColumn.innerHTML = headerHTML + cardsHTML;
+        html += '</div>';
+        analysisColumn.innerHTML = html;
         
         // RIGHT COLUMN: Diachronic Visualization
         const visualColumn = document.createElement('div');
@@ -176,12 +202,11 @@ function displayResults(results) {
             </div>
         `;
         
-        // Assemble columns
         resultWrapper.appendChild(analysisColumn);
         resultWrapper.appendChild(visualColumn);
         resultsContainer.appendChild(resultWrapper);
         
-        // Fetch and render diachronic visualization
+        // Render diachronic visualization
         if (word.diachronic && word.diachronic.stages) {
             setTimeout(() => {
                 renderDiachronicPath(
@@ -192,6 +217,12 @@ function displayResults(results) {
             }, 100);
         }
     });
+    
+    // Show paradigm section and populate
+    showParadigmSection();
+    if (results.length > 0 && paradigmWord) {
+        paradigmWord.value = results[0].transliteration;
+    }
 }
 
 // Render Diachronic Visualization
@@ -208,8 +239,8 @@ async function renderDiachronicPath(containerId, mycenaean, classical) {
         const data = await response.json();
         
         const mapper = new DiachronicMapper(containerId, {
-            width: 450,
-            height: 600,
+            width: 420,
+            height: 550,
             layout: 'vertical'
         });
         
@@ -220,12 +251,151 @@ async function renderDiachronicPath(containerId, mycenaean, classical) {
         const container = document.getElementById(containerId);
         if (container) {
             container.innerHTML = `
-                <div style="padding: 2rem; text-align: center; color: #999;">
+                <div style="padding: 2rem; text-align: center; color: var(--base01);">
                     <p>Visualization unavailable</p>
                 </div>
             `;
         }
     }
+}
+
+// Paradigm Generator Functions
+function showParadigmSection() {
+    if (paradigmSection) {
+        paradigmSection.style.display = 'block';
+    }
+}
+
+async function generateParadigm() {
+    const word = paradigmWord.value.trim();
+    
+    if (!word) {
+        alert('Enter a word transliteration');
+        return;
+    }
+    
+    generateParadigmBtn.textContent = 'Generating...';
+    generateParadigmBtn.disabled = true;
+    
+    try {
+        // Try from lexicon first
+        let response = await fetch(`${API_BASE}/generate/${word}`);
+        
+        if (!response.ok) {
+            // Manual generation fallback
+            response = await fetch(`${API_BASE}/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    stem: word.replace(/-/g, ''),
+                    pos: 'noun',
+                    declension: 'o_stem_masculine',
+                    gender: 'masculine'
+                })
+            });
+        }
+        
+        const data = await response.json();
+        displayParadigm(data);
+        
+    } catch (error) {
+        console.error('Paradigm generation error:', error);
+        alert('Failed to generate paradigm');
+    } finally {
+        generateParadigmBtn.textContent = 'Generate Paradigm';
+        generateParadigmBtn.disabled = false;
+    }
+}
+
+function displayParadigm(data) {
+    paradigmResults.style.display = 'block';
+    
+    const statsContainer = paradigmResults.querySelector('.paradigm-stats');
+    const tableContainer = paradigmResults.querySelector('.paradigm-table-container');
+    
+    // Stats
+    statsContainer.innerHTML = `
+        <div class="paradigm-stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.total_forms || data.total}</div>
+                <div class="stat-label">Total Forms</div>
+            </div>
+            <div class="stat-card attested">
+                <div class="stat-value">${data.attested || 0}</div>
+                <div class="stat-label">Attested on Tablets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${data.coverage || '0%'}</div>
+                <div class="stat-label">Coverage</div>
+            </div>
+        </div>
+    `;
+    
+    // Lemma info if available
+    if (data.lemma_data) {
+        let lemmaHTML = '<div class="lemma-info">';
+        if (data.lemma_data.meaning) {
+            lemmaHTML += `<p><strong>Meaning:</strong> ${data.lemma_data.meaning}</p>`;
+        }
+        if (data.lemma_data.classical) {
+            lemmaHTML += `<p><strong>Classical:</strong> ${data.lemma_data.classical}</p>`;
+        }
+        if (data.lemma_data.pie_root) {
+            lemmaHTML += `<p><strong>PIE Root:</strong> ${data.lemma_data.pie_root}`;
+            if (data.lemma_data.pie_meaning) {
+                lemmaHTML += ` "${data.lemma_data.pie_meaning}"`;
+            }
+            lemmaHTML += `</p>`;
+        }
+        lemmaHTML += '</div>';
+        statsContainer.innerHTML += lemmaHTML;
+    }
+    
+    // Paradigm table
+    const forms = data.generated_paradigm || data.forms;
+    
+    // Group by case
+    const byCase = {};
+    forms.forEach(form => {
+        const caseKey = form.case || 'other';
+        if (!byCase[caseKey]) byCase[caseKey] = [];
+        byCase[caseKey].push(form);
+    });
+    
+    let tableHTML = '<div class="paradigm-table">';
+    
+    Object.entries(byCase).forEach(([caseName, caseForms]) => {
+        tableHTML += `
+            <div class="case-group">
+                <h4 class="case-header">${caseName.toUpperCase()}</h4>
+                <div class="forms-grid">
+        `;
+        
+        caseForms.forEach(form => {
+            const attestedClass = form.attested ? 'attested' : 'theoretical';
+            const badge = form.attested 
+                ? '<span class="badge-attested">✓ Attested</span>' 
+                : '<span class="badge-theoretical">Theoretical</span>';
+            
+            tableHTML += `
+                <div class="form-card ${attestedClass}">
+                    <div class="form-transliteration">${form.form}</div>
+                    <div class="form-details">
+                        <span class="form-number">${form.number || ''}</span>
+                        ${badge}
+                    </div>
+                    <div class="form-reconstruction">*${form.reconstruction}</div>
+                </div>
+            `;
+        });
+        
+        tableHTML += '</div></div>';
+    });
+    
+    tableHTML += '</div>';
+    tableContainer.innerHTML = tableHTML;
+    
+    paradigmResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // Load Lexicon
@@ -245,7 +415,6 @@ async function loadLexicon() {
         lexiconContainer.innerHTML = '<div class="lexicon-grid"></div>';
         const grid = lexiconContainer.querySelector('.lexicon-grid');
         
-        // Sort by attestation frequency
         const sortedWords = data.words.sort((a, b) => 
             (a.meaning || '').localeCompare(b.meaning || '')
         );
@@ -257,6 +426,7 @@ async function loadLexicon() {
                 <div class="lex-trans">${word.transliteration}</div>
                 <div class="lex-meaning">${word.meaning}</div>
                 <div class="lex-classical">${word.classical}</div>
+                ${word.pie_root ? `<div class="lex-pie">${word.pie_root}</div>` : ''}
             `;
             item.addEventListener('click', () => {
                 inputTextarea.value = word.transliteration;
@@ -304,7 +474,7 @@ async function loadSoundChanges() {
                 ${change.examples && change.examples.length > 0 ? `
                 <div class="change-examples">
                     <strong>Examples:</strong>
-                    ${change.examples.slice(0, 2).map(ex => 
+                    ${change.examples.slice(0, 3).map(ex => 
                         `<span class="example">${ex[0]} → ${ex[1]}</span>`
                     ).join('')}
                 </div>
@@ -321,12 +491,17 @@ async function loadSoundChanges() {
         loadChangesBtn.textContent = 'Show Sound Changes';
     }
 }
-
 // Clear Input
 function clearInput() {
     inputTextarea.value = '';
     resultsSection.style.display = 'none';
     resultsContainer.innerHTML = '';
+    if (paradigmSection) {
+        paradigmSection.style.display = 'none';
+    }
+    if (paradigmResults) {
+        paradigmResults.style.display = 'none';
+    }
 }
 
 // Load syllabary on page load
@@ -338,13 +513,19 @@ async function loadSyllabary() {
         
         if (!grid) return;
         
-        Object.entries(data.signs).forEach(([unicode, info]) => {
+        // Sort by transliteration for easier finding
+        const sortedSigns = Object.entries(data.signs).sort((a, b) => 
+            a[1].transliteration.localeCompare(b[1].transliteration)
+        );
+        
+        sortedSigns.forEach(([unicode, info]) => {
             const btn = document.createElement('button');
             btn.className = 'syllabary-sign';
             btn.innerHTML = `
                 <span class="sign">${unicode}</span>
                 <span class="label">${info.transliteration}</span>
             `;
+            btn.title = `${info.transliteration} - Click to insert`;
             btn.addEventListener('click', () => {
                 inputTextarea.value += unicode;
                 inputTextarea.focus();
@@ -359,143 +540,6 @@ async function loadSyllabary() {
 // Initialise on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadSyllabary();
-    console.log('Linear B Analysis Tool initialized');
+    console.log('Linear B Diachronic Phonological Mapper initialized');
+    console.log('API endpoint:', API_BASE);
 });
-
-// Paradigm Generator
-const paradigmSection = document.getElementById('paradigm-section');
-const paradigmWord = document.getElementById('paradigm-word');
-const generateParadigmBtn = document.getElementById('generate-paradigm-btn');
-const paradigmResults = document.getElementById('paradigm-results');
-
-// Show paradigm section when analyzing
-function showParadigmSection() {
-    paradigmSection.style.display = 'block';
-}
-
-generateParadigmBtn.addEventListener('click', async () => {
-    const word = paradigmWord.value.trim();
-    
-    if (!word) {
-        alert('Enter a word transliteration');
-        return;
-    }
-    
-    generateParadigmBtn.textContent = 'Generating...';
-    generateParadigmBtn.disabled = true;
-    
-    try {
-        // Try from lexicon first
-        const response = await fetch(`${API_BASE}/generate/${word}`);
-        
-        if (response.ok) {
-            const data = await response.json();
-            displayParadigm(data);
-        } else {
-            // Manual generation
-            const manualResponse = await fetch(`${API_BASE}/generate`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    stem: word.replace(/-/g, ''),
-                    pos: 'noun',
-                    declension: 'o_stem_masculine',
-                    gender: 'masculine'
-                })
-            });
-            
-            const data = await manualResponse.json();
-            displayParadigm(data);
-        }
-    } catch (error) {
-        console.error('Paradigm generation error:', error);
-        alert('Failed to generate paradigm');
-    } finally {
-        generateParadigmBtn.textContent = 'Generate Paradigm';
-        generateParadigmBtn.disabled = false;
-    }
-});
-
-function displayParadigm(data) {
-    paradigmResults.style.display = 'block';
-    
-    // Stats
-    const statsHTML = `
-        <div class="paradigm-stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">${data.total_forms || data.total}</div>
-                <div class="stat-label">Total Forms</div>
-            </div>
-            <div class="stat-card attested">
-                <div class="stat-value">${data.attested || 0}</div>
-                <div class="stat-label">Attested on Tablets</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${data.coverage || '0%'}</div>
-                <div class="stat-label">Coverage</div>
-            </div>
-        </div>
-    `;
-    
-    paradigmResults.querySelector('.paradigm-stats').innerHTML = statsHTML;
-    
-    // Paradigm table
-    const forms = data.generated_paradigm || data.forms;
-    
-    // Group by case
-    const byCase = {};
-    forms.forEach(form => {
-        const caseKey = form.case || 'other';
-        if (!byCase[caseKey]) byCase[caseKey] = [];
-        byCase[caseKey].push(form);
-    });
-    
-    let tableHTML = '<div class="paradigm-table">';
-    
-    Object.entries(byCase).forEach(([caseName, caseForms]) => {
-        tableHTML += `
-            <div class="case-group">
-                <h4 class="case-header">${caseName.toUpperCase()}</h4>
-                <div class="forms-grid">
-        `;
-        
-        caseForms.forEach(form => {
-            const attestedClass = form.attested ? 'attested' : 'theoretical';
-            const badge = form.attested ? '<span class="badge-attested">✓ Attested</span>' : '<span class="badge-theoretical">Theoretical</span>';
-            
-            tableHTML += `
-                <div class="form-card ${attestedClass}">
-                    <div class="form-transliteration">${form.form}</div>
-                    <div class="form-details">
-                        <span class="form-number">${form.number || ''}</span>
-                        ${badge}
-                    </div>
-                    <div class="form-reconstruction">*${form.reconstruction}</div>
-                </div>
-            `;
-        });
-        
-        tableHTML += '</div></div>';
-    });
-    
-    tableHTML += '</div>';
-    
-    paradigmResults.querySelector('.paradigm-table-container').innerHTML = tableHTML;
-    
-    // Scroll to results
-    paradigmResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// Auto-populate paradigm generator when analyzing words
-const originalDisplayResults = displayResults;
-displayResults = function(results) {
-    originalDisplayResults(results);
-    
-    // Show paradigm section
-    showParadigmSection();
-    
-    // Auto-populate first word
-    if (results && results.length > 0) {
-        paradigmWord.value = results[0].transliteration;
-    }
-};

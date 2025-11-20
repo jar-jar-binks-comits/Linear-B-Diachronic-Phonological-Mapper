@@ -1,6 +1,6 @@
 """
 Linear B Analysis Tool - Flask Backend
-Integrates tokenizer, transcriber, morphology, and phonology engines
+Integrates tokenizer, transcriber, morphology, phonology, and generator engines
 """
 
 from flask import Flask, request, jsonify, render_template
@@ -22,12 +22,13 @@ app = Flask(__name__,
             static_folder='../frontend/static')
 CORS(app)
 
-# Initialise engines
+# Initialize engines
 tokenizer = LinearBTokenizer()
 transcriber = LinearBTranscriber(data_dir='data')
 morphology = MorphologicalAnalyzer(data_dir='data')
 phonology = PhonologyEngine(data_dir='data')
 generator = ParadigmGenerator(data_dir='data')
+
 
 @app.route('/')
 def index():
@@ -57,10 +58,8 @@ def transcribe():
     if not text:
         return jsonify({'error': 'No text provided'}), 400
     
-    # Transcribe
     results = transcriber.transcribe_text(text)
     
-    # Add phonetic forms
     for result in results:
         result['phonetic'] = transcriber.get_phonetic_form(result['transliteration'])
     
@@ -74,15 +73,7 @@ def analyze():
     
     Request: {"word": "wa-na-ka-te"}
     Response: {
-        "analyses": [
-            {
-                "stem": "wanak",
-                "ending": "te",
-                "case": "dative",
-                "number": "singular",
-                "confidence": 0.9
-            }
-        ]
+        "analyses": [...]
     }
     """
     data = request.get_json()
@@ -91,13 +82,11 @@ def analyze():
     if not word:
         return jsonify({'error': 'No word provided'}), 400
     
-    # Analyze
     analyses = morphology.segment_word(word)
     
-    # Convert to dicts
     result = {
         'word': word,
-        'analyses': [a.to_dict() for a in analyses[:3]]  # Top 3
+        'analyses': [a.to_dict() for a in analyses[:3]]
     }
     
     return jsonify(result)
@@ -122,7 +111,6 @@ def diachronic_analysis():
     if not myc or not clas:
         return jsonify({'error': 'Both forms required'}), 400
     
-    # Get diachronic path
     path = phonology.apply_changes(myc, clas)
     explanations = phonology.explain_divergence(myc, clas)
     
@@ -147,13 +135,11 @@ def diachronic_analysis():
 @app.route('/api/full_analysis', methods=['POST'])
 def full_analysis():
     """
-    Complete analysis pipeline: transcribe → morphology → diachronic
+    Complete analysis pipeline: transcribe → morphology → diachronic → PIE
     
     Request: {"text": "𐀷𐀙𐀏"}
     Response: {
-        "transcription": {...},
-        "morphology": {...},
-        "diachronic": {...}
+        "results": [...]
     }
     """
     data = request.get_json()
@@ -164,7 +150,6 @@ def full_analysis():
     
     results = []
     
-    # Transcribe
     transcriptions = transcriber.transcribe_text(text)
     
     for trans in transcriptions:
@@ -179,9 +164,8 @@ def full_analysis():
         if morph_analyses:
             word_analysis['morphology'] = morph_analyses[0].to_dict()
         
-        # Diachronic (if word in lexicon)
+        # Diachronic + PIE
         try:
-            # Try to get classical form from lexicon
             word_data = morphology.lexicon.get(trans['transliteration'])
             if word_data and 'classical_greek' in word_data:
                 myc_form = word_data.get('reconstruction', trans['transliteration'].replace('-', ''))
@@ -191,15 +175,112 @@ def full_analysis():
                 word_analysis['diachronic'] = {
                     'classical': clas_form,
                     'meaning': word_data.get('meaning', ''),
-                    'stages': path.to_dict()['stages'][:3],  # Show first 3 stages
-                    'total_changes': len(path.changes_applied)
+                    'stages': path.to_dict()['stages'][:4],
+                    'total_changes': len(path.changes_applied),
+                    'pie_root': word_data.get('pie_root'),
+                    'pie_meaning': word_data.get('pie_meaning'),
+                    'cognates': word_data.get('cognates')
                 }
-        except:
-            pass
+        except Exception as e:
+            print(f"Diachronic analysis error: {e}")
         
         results.append(word_analysis)
     
     return jsonify({'results': results})
+
+
+@app.route('/api/generate', methods=['POST'])
+def generate_paradigm():
+    """
+    Generate complete inflectional paradigm
+    
+    Request: {
+        "stem": "theo",
+        "pos": "noun",
+        "declension": "o_stem_masculine",
+        "gender": "masculine"
+    }
+    """
+    data = request.get_json()
+    stem = data.get('stem', '')
+    pos = data.get('pos', 'noun')
+    
+    if not stem:
+        return jsonify({'error': 'No stem provided'}), 400
+    
+    result = generator.generate_all_forms(
+        stem=stem,
+        pos=pos,
+        declension=data.get('declension', 'o_stem_masculine'),
+        gender=data.get('gender', 'masculine'),
+        attested_forms=data.get('attested_forms', [])
+    )
+    
+    all_forms = []
+    for form_list in result.values():
+        all_forms.extend([f.to_dict() for f in form_list])
+    
+    attested_count = sum(1 for f in all_forms if f['attested'])
+    
+    return jsonify({
+        'stem': stem,
+        'pos': pos,
+        'forms': all_forms,
+        'total': len(all_forms),
+        'attested': attested_count,
+        'coverage': f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"
+    })
+
+
+@app.route('/api/generate/<word>', methods=['GET'])
+def generate_from_lexicon(word):
+    """
+    Generate paradigm for word in lexicon
+    
+    Example: GET /api/generate/wa-na-ka
+    """
+    if word not in morphology.lexicon:
+        return jsonify({'error': 'Word not in lexicon'}), 404
+    
+    word_data = morphology.lexicon[word]
+    stem = word_data.get('stem', word.replace('-', ''))
+    pos = word_data.get('pos', 'noun')
+    
+    # Get ALL attested forms from lexicon
+    attested_forms = word_data.get('attested_forms', [])
+    if word not in attested_forms:
+        attested_forms.append(word)
+    
+    result = generator.generate_all_forms(
+        stem=stem,
+        pos=pos,
+        declension=word_data.get('declension', 'consonant_stem'),
+        gender=word_data.get('gender', 'masculine'),
+        attested_forms=attested_forms
+    )
+    
+    all_forms = []
+    for form_list in result.values():
+        all_forms.extend([f.to_dict() for f in form_list])
+    
+    attested_count = sum(1 for f in all_forms if f['attested'])
+    
+    return jsonify({
+        'word': word,
+        'lemma_data': {
+            'meaning': word_data.get('meaning'),
+            'classical': word_data.get('classical_greek'),
+            'stem': stem,
+            'declension': word_data.get('declension'),
+            'pie_root': word_data.get('pie_root'),
+            'pie_meaning': word_data.get('pie_meaning'),
+            'cognates': word_data.get('cognates')
+        },
+        'generated_paradigm': all_forms,
+        'total_forms': len(all_forms),
+        'attested': attested_count,
+        'coverage': f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"
+    })
 
 
 @app.route('/api/lexicon', methods=['GET'])
@@ -211,7 +292,8 @@ def get_lexicon():
             'transliteration': trans,
             'meaning': data.get('meaning', ''),
             'classical': data.get('classical_greek', ''),
-            'pos': data.get('pos', 'unknown')
+            'pos': data.get('pos', 'unknown'),
+            'pie_root': data.get('pie_root', '')
         })
     return jsonify({'words': words})
 
@@ -235,6 +317,14 @@ def get_sound_changes():
     return jsonify({'changes': changes})
 
 
+@app.route('/data/syllabary.json')
+def serve_syllabary():
+    """Serve syllabary data for frontend"""
+    import json
+    with open('data/syllabary.json', 'r', encoding='utf-8') as f:
+        return jsonify(json.load(f))
+
+
 @app.route('/health', methods=['GET'])
 def health():
     """Health check endpoint"""
@@ -251,119 +341,10 @@ def health():
         'sound_rules': len(phonology.rules)
     })
 
-@app.route('/api/generate', methods=['POST'])
-def generate_paradigm():
-    """
-    Generate complete inflectional paradigm
-    
-    Request: {
-        "stem": "theo",
-        "pos": "noun",
-        "declension": "o_stem_masculine",
-        "gender": "masculine"
-    }
-    Response: {
-        "forms": [...],
-        "total": 24,
-        "attested": 2
-    }
-    """
-    data = request.get_json()
-    stem = data.get('stem', '')
-    pos = data.get('pos', 'noun')
-    
-    if not stem:
-        return jsonify({'error': 'No stem provided'}), 400
-    
-    # Generate paradigm
-    result = generator.generate_all_forms(
-        stem=stem,
-        pos=pos,
-        declension=data.get('declension', 'o_stem_masculine'),
-        gender=data.get('gender', 'masculine'),
-        attested_forms=data.get('attested_forms', [])
-    )
-    
-    # Flatten and count
-    all_forms = []
-    for form_list in result.values():
-        all_forms.extend([f.to_dict() for f in form_list])
-    
-    attested_count = sum(1 for f in all_forms if f['attested'])
-    
-    return jsonify({
-        'stem': stem,
-        'pos': pos,
-        'forms': all_forms,
-        'total': len(all_forms),
-        'attested': attested_count,
-        'coverage': f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"
-    })
-
-@app.route('/api/generate/<word>', methods=['GET'])
-def generate_from_lexicon(word):
-    """
-    Generate paradigm for word in lexicon
-    
-    Example: GET /api/generate/wa-na-ka
-    """
-    # Look up in lexicon
-    if word not in morphology.lexicon:
-        return jsonify({'error': 'Word not in lexicon'}), 404
-    
-    word_data = morphology.lexicon[word]
-    stem = word_data.get('stem', word.replace('-', ''))
-    pos = word_data.get('pos', 'noun')
-    
-    result = generator.generate_all_forms(
-        stem=stem,
-        pos=pos,
-        declension=word_data.get('declension', 'o_stem_masculine'),
-        gender=word_data.get('gender', 'masculine'),
-        attested_forms=word_data.get('attested_forms', [word])
-    )
-    # get ALL attested forms from lexicon 
-    attested_forms = word_data.get('attested_forms',[])
-    if word not in attested_forms:
-        attested_forms.append(word) #this is like a lookup word itself
-    
-    result=generator.generate_all_forms(
-        stem=stem,
-        pos=pos,
-        declesion=word_data.get('declesion', 'consonant_stem'), 
-        gender=word_data.get('gender', 'masculine'),
-        attested_forms=attested_forms #pass attested forms
-    )
-    
-    all_forms = []
-    for form_list in result.values():
-        all.forms.extend([f.to_dict() for f in form_list])
-        
-    attested_count = sum(1 for f in all_forms if f['attested'])
-    
-    return jsonify({
-        'word' : word,
-        'lemma_Data' : {
-            'meaning' : word_data.get('meaning'),
-            'classical' : word_data.get('classical_greek'),
-            'stem' : stem,
-            'declesion' : word_data.get('declesion')
-        },
-        'generate_paradigm' : all_forms,
-        'total_forms' : len(all_forms),
-        'attested' : attested_count,
-        'coverage' : f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"    
-    })
-
-@app.route('/api/export/<format>', methods=['POST'])
-def export_analysis(format):
-    """Export as JSON, CSV, or BibTeX citation"""
-    # format: 'json', 'csv', 'bibtex'
-    pass
 
 if __name__ == '__main__':
     print("="*70)
-    print("LINEAR B ANALYSIS TOOL - Starting Server")
+    print("LINEAR B DIACHRONIC PHONOLOGICAL MAPPER")
     print("="*70)
     print(f"Lexicon: {len(morphology.lexicon)} words")
     print(f"Phonological rules: {len(phonology.rules)}")
