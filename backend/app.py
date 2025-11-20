@@ -322,16 +322,37 @@ def generate_from_lexicon(word):
         gender=word_data.get('gender', 'masculine'),
         attested_forms=word_data.get('attested_forms', [word])
     )
+    # get ALL attested forms from lexicon 
+    attested_forms = word_data.get('attested_forms',[])
+    if word not in attested_forms:
+        attested_forms.append(word) #this is like a lookup word itself
+    
+    result=generator.generate_all_forms(
+        stem=stem,
+        pos=pos,
+        declesion=word_data.get('declesion', 'consonant_stem'), 
+        gender=word_data.get('gender', 'masculine'),
+        attested_forms=attested_forms #pass attested forms
+    )
     
     all_forms = []
     for form_list in result.values():
-        all_forms.extend([f.to_dict() for f in form_list])
+        all.forms.extend([f.to_dict() for f in form_list])
+        
+    attested_count = sum(1 for f in all_forms if f['attested'])
     
     return jsonify({
-        'word': word,
-        'lemma_data': word_data,
-        'generated_paradigm': all_forms,
-        'total_forms': len(all_forms)
+        'word' : word,
+        'lemma_Data' : {
+            'meaning' : word_data.get('meaning'),
+            'classical' : word_data.get('classical_greek'),
+            'stem' : stem,
+            'declesion' : word_data.get('declesion')
+        },
+        'generate_paradigm' : all_forms,
+        'total_forms' : len(all_forms),
+        'attested' : attested_count,
+        'coverage' : f"{(attested_count/len(all_forms)*100):.1f}%" if all_forms else "0%"    
     })
 
 @app.route('/api/export/<format>', methods=['POST'])

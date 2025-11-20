@@ -17,12 +17,12 @@ class DiachronicMapper {
         
         // Professional dark palette
         this.colors = {
-            mycenaean: '#5C4033',
-            intermediate: '#8B6914', 
-            classical: '#1a4d7a',
-            connection: '#7a7a7a',
-            text: '#2c2c2c',
-            background: '#fafafa'
+            mycenaean: '#B58900',
+            intermediate: '#CB4B16', 
+            classical: '#268BD2',
+            connection: '#586E75',
+            text: '#839496',
+            background: '#002B36'
         };
     }
     

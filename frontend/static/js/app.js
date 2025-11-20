@@ -356,8 +356,146 @@ async function loadSyllabary() {
     }
 }
 
-// Initialize on page load
+// Initialise on page load
 document.addEventListener('DOMContentLoaded', () => {
     loadSyllabary();
     console.log('Linear B Analysis Tool initialized');
 });
+
+// Paradigm Generator
+const paradigmSection = document.getElementById('paradigm-section');
+const paradigmWord = document.getElementById('paradigm-word');
+const generateParadigmBtn = document.getElementById('generate-paradigm-btn');
+const paradigmResults = document.getElementById('paradigm-results');
+
+// Show paradigm section when analyzing
+function showParadigmSection() {
+    paradigmSection.style.display = 'block';
+}
+
+generateParadigmBtn.addEventListener('click', async () => {
+    const word = paradigmWord.value.trim();
+    
+    if (!word) {
+        alert('Enter a word transliteration');
+        return;
+    }
+    
+    generateParadigmBtn.textContent = 'Generating...';
+    generateParadigmBtn.disabled = true;
+    
+    try {
+        // Try from lexicon first
+        const response = await fetch(`${API_BASE}/generate/${word}`);
+        
+        if (response.ok) {
+            const data = await response.json();
+            displayParadigm(data);
+        } else {
+            // Manual generation
+            const manualResponse = await fetch(`${API_BASE}/generate`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    stem: word.replace(/-/g, ''),
+                    pos: 'noun',
+                    declension: 'o_stem_masculine',
+                    gender: 'masculine'
+                })
+            });
+            
+            const data = await manualResponse.json();
+            displayParadigm(data);
+        }
+    } catch (error) {
+        console.error('Paradigm generation error:', error);
+        alert('Failed to generate paradigm');
+    } finally {
+        generateParadigmBtn.textContent = 'Generate Paradigm';
+        generateParadigmBtn.disabled = false;
+    }
+});
+
+function displayParadigm(data) {
+    paradigmResults.style.display = 'block';
+    
+    // Stats
+    const statsHTML = `
+        <div class="paradigm-stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">${data.total_forms || data.total}</div>
+                <div class="stat-label">Total Forms</div>
+            </div>
+            <div class="stat-card attested">
+                <div class="stat-value">${data.attested || 0}</div>
+                <div class="stat-label">Attested on Tablets</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">${data.coverage || '0%'}</div>
+                <div class="stat-label">Coverage</div>
+            </div>
+        </div>
+    `;
+    
+    paradigmResults.querySelector('.paradigm-stats').innerHTML = statsHTML;
+    
+    // Paradigm table
+    const forms = data.generated_paradigm || data.forms;
+    
+    // Group by case
+    const byCase = {};
+    forms.forEach(form => {
+        const caseKey = form.case || 'other';
+        if (!byCase[caseKey]) byCase[caseKey] = [];
+        byCase[caseKey].push(form);
+    });
+    
+    let tableHTML = '<div class="paradigm-table">';
+    
+    Object.entries(byCase).forEach(([caseName, caseForms]) => {
+        tableHTML += `
+            <div class="case-group">
+                <h4 class="case-header">${caseName.toUpperCase()}</h4>
+                <div class="forms-grid">
+        `;
+        
+        caseForms.forEach(form => {
+            const attestedClass = form.attested ? 'attested' : 'theoretical';
+            const badge = form.attested ? '<span class="badge-attested">✓ Attested</span>' : '<span class="badge-theoretical">Theoretical</span>';
+            
+            tableHTML += `
+                <div class="form-card ${attestedClass}">
+                    <div class="form-transliteration">${form.form}</div>
+                    <div class="form-details">
+                        <span class="form-number">${form.number || ''}</span>
+                        ${badge}
+                    </div>
+                    <div class="form-reconstruction">*${form.reconstruction}</div>
+                </div>
+            `;
+        });
+        
+        tableHTML += '</div></div>';
+    });
+    
+    tableHTML += '</div>';
+    
+    paradigmResults.querySelector('.paradigm-table-container').innerHTML = tableHTML;
+    
+    // Scroll to results
+    paradigmResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Auto-populate paradigm generator when analyzing words
+const originalDisplayResults = displayResults;
+displayResults = function(results) {
+    originalDisplayResults(results);
+    
+    // Show paradigm section
+    showParadigmSection();
+    
+    // Auto-populate first word
+    if (results && results.length > 0) {
+        paradigmWord.value = results[0].transliteration;
+    }
+};
