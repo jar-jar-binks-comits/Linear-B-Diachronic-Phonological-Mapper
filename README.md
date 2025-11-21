@@ -8,7 +8,7 @@
 
 An interactive web tool for transcribing, analyzing, and visualizing the phonological evolution of Linear B script (Mycenaean Greek, c. 1450-1200 BCE) to Classical Greek (c. 800-400 BCE).
 
-![Screenshot](screenshot.png)
+![Linear B Tool Screenshot](screenshot.png)
 
 ---
 
