@@ -386,7 +386,8 @@ function clearInput() {
 async function loadSyllabary() {
     try {
         const response = await fetch(`${API_BASE.replace('/api', '')}/data/syllabary.json`);
-        const data = await response.json();
+        const text = await response.text(); // Get as text first
+        const data = JSON.parse(text); // Then parse
         const grid = document.getElementById('syllabary-grid');
         
         if (!grid) return;
@@ -395,25 +396,52 @@ async function loadSyllabary() {
         const sortedSigns = Object.entries(data.signs).sort((a, b) => 
             a[1].transliteration.localeCompare(b[1].transliteration)
         );
-
-        sortedSigns.forEach(([unicode, info]) => {
+        
+        sortedSigns.forEach(([unicodeChar, info]) => {
             const btn = document.createElement('button');
             btn.className = 'syllabary-sign';
+            btn.type = 'button'; // Important: prevent form submission
+            
+            // Store the character directly in dataset
+            btn.dataset.char = unicodeChar;
+            
             btn.innerHTML = `
-                <span class="sign">${unicode}</span>
+                <span class="sign">${unicodeChar}</span>
                 <span class="label">${info.transliteration}</span>
             `;
             btn.title = `${info.transliteration} - Click to insert`;
-            btn.addEventListener('click', () => {
-                const cursorPos = inputTextarea.selectionStart;
-                const textBefore = inputTextarea.value.substring(0, cursorPos);
-                const textAfter = inputTextarea.value.substring(cursorPos);
-                inputTextarea.value = textBefore + unicode + textAfter;
+            
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Get the character from the button's dataset
+                const charToInsert = btn.dataset.char;
+                
+                // Get current cursor position
+                const start = inputTextarea.selectionStart;
+                const end = inputTextarea.selectionEnd;
+                const currentValue = inputTextarea.value;
+                
+                // Insert character at cursor position
+                inputTextarea.value = 
+                    currentValue.substring(0, start) + 
+                    charToInsert + 
+                    currentValue.substring(end);
+                
+                // Move cursor after inserted character
+                const newPosition = start + charToInsert.length;
+                inputTextarea.selectionStart = newPosition;
+                inputTextarea.selectionEnd = newPosition;
+                
+                // Focus back on textarea
                 inputTextarea.focus();
-                inputTextarea.setSelectionRange(cursorPos + 1, cursorPos + 1);
             });
+            
             grid.appendChild(btn);
         });
+        
+        console.log(`Loaded ${sortedSigns.length} syllabary signs`);
+        
     } catch (error) {
         console.error('Failed to load syllabary:', error);
     }

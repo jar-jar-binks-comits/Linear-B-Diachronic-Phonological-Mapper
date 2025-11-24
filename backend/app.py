@@ -2,13 +2,15 @@
 Linear B Analysis Tool - Flask Backend
 Integrates tokenizer, transcriber, morphology, phonology, and generator engines
 """
+
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+import os
 import sys
 import io
 
 # Force UTF-8 encoding
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
 
 # Add core modules to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'core'))
@@ -18,7 +20,6 @@ from core.transcriber import LinearBTranscriber
 from core.morphology import MorphologicalAnalyzer
 from core.phonology import PhonologyEngine
 from core.generator import ParadigmGenerator
-
 app = Flask(__name__, 
             template_folder='../frontend/templates',
             static_folder='../frontend/static')
