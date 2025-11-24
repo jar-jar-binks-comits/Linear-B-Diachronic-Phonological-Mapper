@@ -245,29 +245,43 @@ def generate_paradigm():
 
 @app.route('/api/generate/<word>', methods=['GET'])
 def generate_from_lexicon(word):
-    """
-    Generate paradigm for word in lexicon
-    
-    Example: GET /api/generate/wa-na-ka
-    """
+    """Generate paradigm for word in lexicon"""
     if word not in morphology.lexicon:
         return jsonify({'error': 'Word not in lexicon'}), 404
     
     word_data = morphology.lexicon[word]
-    stem = word_data.get('stem', word.replace('-', ''))
-    pos = word_data.get('pos', 'noun')
     
-    # Get ALL attested forms from lexicon
+    # CRITICAL: Use the actual stem from lexicon, NOT the transliteration
+    stem = word_data.get('stem')
+    if not stem:
+        # Fallback: try to extract stem by removing last syllable
+        stem = word.rsplit('-', 1)[0] if '-' in word else word
+    
+    pos = word_data.get('pos', 'noun')
+    declension = word_data.get('declension', 'o_stem_masculine')
+    
+    # Get attested forms - normalize them
     attested_forms = word_data.get('attested_forms', [])
     if word not in attested_forms:
         attested_forms.append(word)
     
+    # Normalise attested forms (remove hyphens for matching)
+    attested_normalized = []
+    for form in attested_forms:
+        attested_normalized.append(form)
+        attested_normalized.append(form.replace('-', ''))
+    
+    print(f"[GENERATE] Word: {word}")
+    print(f"[GENERATE] Stem: {stem}")
+    print(f"[GENERATE] Declension: {declension}")
+    print(f"[GENERATE] Attested forms: {attested_normalized}")
+    
     result = generator.generate_all_forms(
         stem=stem,
         pos=pos,
-        declension=word_data.get('declension', 'consonant_stem', 'o_stem_masculine'),
+        declension=declension,
         gender=word_data.get('gender', 'masculine'),
-        attested_forms=attested_forms
+        attested_forms=attested_normalized
     )
     
     all_forms = []
@@ -276,13 +290,15 @@ def generate_from_lexicon(word):
     
     attested_count = sum(1 for f in all_forms if f['attested'])
     
+    print(f"[GENERATE] Generated {len(all_forms)} forms, {attested_count} attested")
+    
     return jsonify({
         'word': word,
         'lemma_data': {
             'meaning': word_data.get('meaning'),
             'classical': word_data.get('classical_greek'),
             'stem': stem,
-            'declension': word_data.get('declension'),
+            'declension': declension,
             'pie_root': word_data.get('pie_root'),
             'pie_meaning': word_data.get('pie_meaning'),
             'cognates': word_data.get('cognates')
@@ -352,6 +368,12 @@ def health():
         'sound_rules': len(phonology.rules)
     })
 
+@app.route('/api/export/<word>', methods=['GET'])
+def export_analysis(word):
+    """Export complete analysis as JSON for citation"""
+    # Generate full analysis
+    # Return downloadable JSON
+    pass
 
 if __name__ == '__main__':
     print("="*70)

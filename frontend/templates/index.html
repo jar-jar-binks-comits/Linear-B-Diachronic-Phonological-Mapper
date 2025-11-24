@@ -1,4 +1,56 @@
 <!DOCTYPE html>
+<p class="tagline">
+    Mycenaean → Classical Greek (1450-400 BCE)
+    <button id="about-btn" style="margin-left: 1rem; padding: 0.3rem 0.8rem; background: var(--base01); color: var(--base0); border: none; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">About</button>
+</p>
+
+<!-- About modal (hidden by default) -->
+<div id="about-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; padding: 2rem; overflow: auto;">
+    <div style="max-width: 700px; margin: 2rem auto; background: var(--base02); border-radius: 12px; padding: 2rem; border: 2px solid var(--cyan);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="color: var(--cyan); margin: 0;">About Linear B Diachronic Mapper</h2>
+            <button id="close-about" style="background: none; border: none; color: var(--base0); font-size: 1.5rem; cursor: pointer;">×</button>
+        </div>
+        
+        <div style="color: var(--base0); line-height: 1.6;">
+            <h3 style="color: var(--yellow); margin-top: 1rem;">What is Linear B?</h3>
+            <p>Linear B is a syllabic script used by the Mycenaean Greeks between approximately 1450-1200 BCE. It was primarily used for administrative records on clay tablets found at sites including Knossos, Pylos, Mycenae, and Thebes.</p>
+            
+            <h3 style="color: var(--yellow); margin-top: 1rem;">Features</h3>
+            <ul style="margin-left: 1.5rem;">
+                <li>Transcription of Linear B Unicode to transliteration</li>
+                <li>Morphological analysis with 100+ word lexicon</li>
+                <li>Diachronic phonological mapping (Mycenaean → Classical)</li>
+                <li>Paradigm generator (world's first computational implementation)</li>
+                <li>Proto-Indo-European etymologies with cognates</li>
+            </ul>
+            
+            <h3 style="color: var(--yellow); margin-top: 1rem;">How to Use</h3>
+            <ol style="margin-left: 1.5rem;">
+                <li>Click syllabary signs on the left to insert Linear B characters</li>
+                <li>Or paste Linear B Unicode directly into the text area</li>
+                <li>Click "Analyse" or press Ctrl+Enter</li>
+                <li>View morphological analysis, Classical Greek equivalents, and sound changes</li>
+                <li>Use the Paradigm Generator to see all inflected forms</li>
+            </ol>
+            
+            <h3 style="color: var(--yellow); margin-top: 1rem;">Citation</h3>
+            <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; background: var(--base03); padding: 1rem; border-radius: 6px;">
+                Capellini, E. (2024). Linear B Diachronic Phonological Mapper [Software]. 
+                Available at: https://github.com/jar-jar-binks-comits/linear-b-diachronic-phonological-mapper
+            </p>
+            
+            <h3 style="color: var(--yellow); margin-top: 1rem;">Data Sources</h3>
+            <ul style="margin-left: 1.5rem; font-size: 0.9rem;">
+                <li>Ventris, M. & Chadwick, J. (1973). <em>Documents in Mycenaean Greek</em></li>
+                <li>Palaeolexicon: Mycenaean Greek Lexicon</li>
+                <li>DĀMOS Database: Linear B Tablet Corpus</li>
+                <li>Unicode Consortium: Linear B Block (U+10000–U+1007F)</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">

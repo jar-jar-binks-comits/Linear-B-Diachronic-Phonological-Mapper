@@ -447,6 +447,31 @@ async function loadSyllabary() {
     }
 }
 
+// About modal
+const aboutBtn = document.getElementById('about-btn');
+const aboutModal = document.getElementById('about-modal');
+const closeAbout = document.getElementById('close-about');
+
+if (aboutBtn) {
+    aboutBtn.addEventListener('click', () => {
+        aboutModal.style.display = 'block';
+    });
+}
+
+if (closeAbout) {
+    closeAbout.addEventListener('click', () => {
+        aboutModal.style.display = 'none';
+    });
+}
+
+if (aboutModal) {
+    aboutModal.addEventListener('click', (e) => {
+        if (e.target === aboutModal) {
+            aboutModal.style.display = 'none';
+        }
+    });
+}
+
 // Initialise
 document.addEventListener('DOMContentLoaded', () => {
     loadSyllabary();
