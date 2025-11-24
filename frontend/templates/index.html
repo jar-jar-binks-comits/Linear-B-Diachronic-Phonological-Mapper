@@ -3,90 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linear B Diachronic Phonological Mapper</title>
+    <title>Linear B Diachronic Mapper</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Linear+B&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Linear+B&family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Linear B Diachronic Phonological Mapper</h1>
-            <p class="subtitle">Trace the evolution from Mycenaean to Classical Greek (1450-400 BCE)</p>
-        </header>
-
-        <main>
-            <!-- Input Section -->
-            <section class="input-section">
-                <div class="input-group">
-                    <label for="linearb-input">Linear B Text</label>
-                    <textarea id="linearb-input" placeholder="Paste Linear B Unicode here: 𐀷𐀙𐀏"></textarea>
-                </div>
+    <!-- Three-column layout -->
+    <div class="app-container">
+        
+        <!-- LEFT SIDEBAR: Syllabary -->
+        <aside class="syllabary-sidebar">
+            <div class="sidebar-header">
+                <h3>Linear B Syllabary</h3>
+                <p class="sidebar-subtitle">Click to insert</p>
+            </div>
+            <div id="syllabary-grid" class="syllabary-compact"></div>
+        </aside>
+        
+        <!-- CENTER: Main workspace -->
+        <main class="workspace">
+            <header class="app-header">
+                <h1>Linear B Diachronic Mapper</h1>
+                <p class="tagline">Mycenaean → Classical Greek (1450-400 BCE)</p>
+            </header>
+            
+            <!-- Input area -->
+            <section class="input-panel">
+                <textarea id="linearb-input" 
+                          placeholder="Enter Linear B text: 𐀷𐀙𐀏"
+                          rows="4"></textarea>
                 
-                <div class="button-group">
-                    <button id="analyze-btn" class="btn-primary">Analyze</button>
-                    <button id="clear-btn" class="btn-secondary">Clear</button>
-                </div>
-
-                <!-- Example buttons -->
-                <div class="examples">
-                    <p>Examples:</p>
-                    <button class="example-btn" data-text="𐀷𐀙𐀏">wa-na-ka (king)</button>
-                    <button class="example-btn" data-text="𐀡𐀴𐀛𐀊">po-ti-ni-ja (goddess)</button>
-                    <button class="example-btn" data-text="𐀳𐀃">te-o (god)</button>
-                    <button class="example-btn" data-text="𐀏𐀒">ka-ko (bronze)</button>
-                </div>
-
-                <div class="syllabary-panel">
-                     <h3>Linear B Syllabary (Click to insert)</h3>
-                     <div id="syllabary-grid" class="syllabary-grid"></div>
+                <div class="action-bar">
+                    <button id="analyze-btn" class="btn-analyze">Analyze</button>
+                    <button id="clear-btn" class="btn-clear">Clear</button>
+                    
+                    <div class="examples-inline">
+                        <span>Examples:</span>
+                        <button class="example-chip" data-text="𐀷𐀙𐀏">wa-na-ka</button>
+                        <button class="example-chip" data-text="𐀡𐀴𐀛𐀊">po-ti-ni-ja</button>
+                        <button class="example-chip" data-text="𐀺𐀒">i-qo</button>
+                    </div>
                 </div>
             </section>
-
-            <!-- Results Section -->
-            <section class="results-section" id="results" style="display: none;">
-                <h2>Analysis Results</h2>
+            
+            <!-- Results area (compact) -->
+            <section id="results" class="results-panel" style="display: none;">
                 <div id="results-container"></div>
             </section>
-
-            <!--Paradigm Generator Section-->
-            <section class = "paradigm-section" style ="display: none;" id= "paradigm-section">
-                <h2>🔄 Paradigm Generator </h2>
-                <p class="section-desc"> Generate all theoretical inflected forms for any words </p>
-
-                <div class="paradigm-controls">
-                    <input type= "text" id="paradigm-word" placeholder="Enter transliteration (e.g., wa-na-ka)">
-                    <button id="generate-paradigm-btn" class="btn-primary"> Generate Paradigm</button>
-                </div>
-
-                <div id="paradigm-results" style="display: none;">
-                    <div class="paradigm-stats"></div>
-                    <div class="paradigm-table-container"></div>
-                </div>
-            </section>
-
-            <!-- Lexicon Browser -->
-            <section class="lexicon-section">
-                <h2>Lexicon Browser</h2>
-                <button id="load-lexicon-btn" class="btn-secondary">Load Full Lexicon</button>
-                <div id="lexicon-container" style="display: none;"></div>
-            </section>
-
-            <!-- Sound Changes Reference -->
-            <section class="reference-section">
-                <h2>Phonological Changes Reference</h2>
-                <button id="load-changes-btn" class="btn-secondary">Show Sound Changes</button>
-                <div id="changes-container" style="display: none;"></div>
-            </section>
         </main>
-
-        <footer>
-            <p>Built with Python, Flask, and computational linguistics | Data: Ventris & Chadwick (1956), Palaeolexicon</p>
-        </footer>
+        
+        <!-- RIGHT SIDEBAR: Tools -->
+        <aside class="tools-sidebar">
+            <div class="tool-panel">
+                <h3>🔄 Paradigm Generator</h3>
+                <input type="text" id="paradigm-word" placeholder="Enter word...">
+                <button id="generate-paradigm-btn" class="btn-tool">Generate</button>
+                <div id="paradigm-results" class="tool-results" style="display: none;"></div>
+            </div>
+            
+            <div class="tool-panel">
+                <h3>📚 Lexicon</h3>
+                <button id="load-lexicon-btn" class="btn-tool">Browse</button>
+                <div id="lexicon-container" class="tool-results" style="display: none;"></div>
+            </div>
+            
+            <div class="tool-panel">
+                <h3>📜 Sound Changes</h3>
+                <button id="load-changes-btn" class="btn-tool">View Rules</button>
+                <div id="changes-container" class="tool-results" style="display: none;"></div>
+            </div>
+        </aside>
+        
     </div>
-
-    <script src="https://d3js.org/d3.v7.min.js" defer></script>
-    <script src="{{ url_for('static', filename='js/mapper.js') }}" defer></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    
+    <script src="{{ url_for('static', filename='js/mapper.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>
 </html>

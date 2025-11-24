@@ -60,6 +60,10 @@ class LinearBTranscriber:
         normalized = self.tokenizer.normalize_text(text)
         word_segments = self.tokenizer.segment_words(normalized)
         
+        print(f"[TRANSCRIBER] Received text: {text!r}")
+        print(f"[TRANSCRIBER] Normalised: {normalized!r}")
+        print(f"[TRANSCRIBER] Segment into {len(word_segments)} words")
+        
         results = []
         for word_tokens in word_segments:
             original = ''.join(t.char for t in word_tokens)

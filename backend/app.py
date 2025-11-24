@@ -22,7 +22,7 @@ app = Flask(__name__,
             static_folder='../frontend/static')
 CORS(app)
 
-# Initialize engines
+# Initialise engines
 tokenizer = LinearBTokenizer()
 transcriber = LinearBTranscriber(data_dir='data')
 morphology = MorphologicalAnalyzer(data_dir='data')
@@ -145,12 +145,19 @@ def full_analysis():
     data = request.get_json()
     text = data.get('text', '')
     
+    print(f"Received text: {text!r}")
+    print(f"Text length: {len(text)}")
+    print(f"Characters: {[c for c in text]}")
+    
     if not text:
         return jsonify({'error': 'No text provided'}), 400
     
     results = []
-    
     transcriptions = transcriber.transcribe_text(text)
+    
+    print(f"Transcribed {len(transcriptions)} words")
+    for trans in transcriptions:
+        print(f"  - {trans}")
     
     for trans in transcriptions:
         word_analysis = {
@@ -254,7 +261,7 @@ def generate_from_lexicon(word):
     result = generator.generate_all_forms(
         stem=stem,
         pos=pos,
-        declension=word_data.get('declension', 'consonant_stem'),
+        declension=word_data.get('declension', 'consonant_stem', 'o_stem_masculine'),
         gender=word_data.get('gender', 'masculine'),
         attested_forms=attested_forms
     )

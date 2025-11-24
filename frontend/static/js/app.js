@@ -7,39 +7,47 @@ const analyzeBtn = document.getElementById('analyze-btn');
 const clearBtn = document.getElementById('clear-btn');
 const resultsSection = document.getElementById('results');
 const resultsContainer = document.getElementById('results-container');
-const exampleBtns = document.querySelectorAll('.example-btn');
-const loadLexiconBtn = document.getElementById('load-lexicon-btn');
-const lexiconContainer = document.getElementById('lexicon-container');
-const loadChangesBtn = document.getElementById('load-changes-btn');
-const changesContainer = document.getElementById('changes-container');
+const exampleChips = document.querySelectorAll('.example-chip');
 
 // Paradigm elements
-const paradigmSection = document.getElementById('paradigm-section');
 const paradigmWord = document.getElementById('paradigm-word');
 const generateParadigmBtn = document.getElementById('generate-paradigm-btn');
 const paradigmResults = document.getElementById('paradigm-results');
 
-// Global mapper instance
-let diachronicMapper = null;
+// Lexicon elements
+const loadLexiconBtn = document.getElementById('load-lexicon-btn');
+const lexiconContainer = document.getElementById('lexicon-container');
+
+// Sound changes elements
+const loadChangesBtn = document.getElementById('load-changes-btn');
+const changesContainer = document.getElementById('changes-container');
 
 // Event Listeners
 analyzeBtn.addEventListener('click', analyzeText);
 clearBtn.addEventListener('click', clearInput);
-exampleBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
+
+exampleChips.forEach(chip => {
+    chip.addEventListener('click', (e) => {
         inputTextarea.value = e.target.dataset.text;
         analyzeText();
     });
 });
-loadLexiconBtn.addEventListener('click', loadLexicon);
-loadChangesBtn.addEventListener('click', loadSoundChanges);
 
 if (generateParadigmBtn) {
     generateParadigmBtn.addEventListener('click', generateParadigm);
 }
 
+if (loadLexiconBtn) {
+    loadLexiconBtn.addEventListener('click', loadLexicon);
+}
+
+if (loadChangesBtn) {
+    loadChangesBtn.addEventListener('click', loadSoundChanges);
+}
+
+// Keyboard shortcuts
 inputTextarea.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' && !e.ctrlKey && !e.shiftKey) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         analyzeText();
     }
@@ -49,6 +57,10 @@ inputTextarea.addEventListener('keydown', (e) => {
 async function analyzeText() {
     const text = inputTextarea.value.trim();
     
+    console.log('Input text:', text);
+    console.log('Text length:', text.length);
+    console.log('Character codes:', [...text].map(c => c.charCodeAt(0).toString(16)));
+
     if (!text) {
         alert('Please enter Linear B text');
         return;
@@ -56,6 +68,7 @@ async function analyzeText() {
     
     analyzeBtn.classList.add('loading');
     analyzeBtn.textContent = 'Analyzing...';
+    analyzeBtn.disabled = true;
     
     try {
         const response = await fetch(`${API_BASE}/full_analysis`, {
@@ -67,7 +80,8 @@ async function analyzeText() {
         if (!response.ok) throw new Error('Analysis failed');
         
         const data = await response.json();
-        displayResults(data.results);
+        console.log('API response:', data);
+        displayResultsCompact(data.results);
         
     } catch (error) {
         console.error('Analysis error:', error);
@@ -81,191 +95,108 @@ async function analyzeText() {
     } finally {
         analyzeBtn.classList.remove('loading');
         analyzeBtn.textContent = 'Analyze';
+        analyzeBtn.disabled = false;
     }
 }
 
-// Display Results with Side-by-Side Layout
-function displayResults(results) {
+// Display Results 
+function displayResultsCompact(results) {
     resultsContainer.innerHTML = '';
     resultsSection.style.display = 'block';
     
     if (!results || results.length === 0) {
-        resultsContainer.innerHTML = '<p style="text-align:center;padding:2rem;">No results found.</p>';
+        resultsContainer.innerHTML = '<p style="text-align:center;padding:2rem;color:var(--base01);">No results found.</p>';
         return;
     }
     
     results.forEach((word, index) => {
-        const resultWrapper = document.createElement('div');
-        resultWrapper.className = 'result-wrapper';
+        const card = document.createElement('div');
+        card.className = 'result-card';
         
-        // LEFT COLUMN: Linguistic Analysis
-        const analysisColumn = document.createElement('div');
-        analysisColumn.className = 'analysis-column';
-        
-        // Word Header
+        // Header
         let html = `
-            <div class="word-header">
-                <span class="linear-b-text">${word.original}</span>
-                <div class="transliteration-group">
+            <div class="result-header">
+                <div class="word-display">
+                    <span class="linear-b-large">${word.original}</span>
                     <span class="transliteration">${word.transliteration}</span>
                     <span class="phonetic">/${word.phonetic}/</span>
                 </div>
             </div>
         `;
         
-        html += '<div class="analysis-grid">';
+        // Info grid
+        html += '<div class="info-grid">';
         
-        // Morphology Card
+        // Morphology
         if (word.morphology) {
             html += `
-                <div class="analysis-card morphology-card">
-                    <h4>📐 Morphological Analysis</h4>
-                    <div class="card-content">
-                        <div class="info-row">
-                            <span class="label">Stem:</span>
-                            <span class="value">${word.morphology.stem}</span>
-                        </div>
-                        <div class="info-row">
-                            <span class="label">Ending:</span>
-                            <span class="value">-${word.morphology.ending || '∅'}</span>
-                        </div>
-                        ${word.morphology.case ? `
-                        <div class="info-row">
-                            <span class="label">Case:</span>
-                            <span class="value">${word.morphology.case}</span>
-                        </div>` : ''}
-                        ${word.morphology.number ? `
-                        <div class="info-row">
-                            <span class="label">Number:</span>
-                            <span class="value">${word.morphology.number}</span>
-                        </div>` : ''}
-                        ${word.morphology.declension ? `
-                        <div class="info-row">
-                            <span class="label">Declension:</span>
-                            <span class="value">${word.morphology.declension.replace(/_/g, ' ')}</span>
-                        </div>` : ''}
-                        <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: ${word.morphology.confidence * 100}%"></div>
-                            <span class="confidence-text">${(word.morphology.confidence * 100).toFixed(0)}% confidence</span>
-                        </div>
+                <div class="info-card">
+                    <h4>Morphology</h4>
+                    <div class="info-value">${word.morphology.stem} + ${word.morphology.ending || '∅'}</div>
+                    <div class="info-secondary">
+                        ${word.morphology.case ? word.morphology.case : ''} 
+                        ${word.morphology.number ? word.morphology.number : ''}
+                        ${word.morphology.confidence ? `(${(word.morphology.confidence * 100).toFixed(0)}%)` : ''}
                     </div>
                 </div>
             `;
         }
         
-        // Classical Greek Card
+        // Classical
         if (word.diachronic) {
             html += `
-                <div class="analysis-card classical-card">
-                    <h4>🏛️ Classical Greek</h4>
-                    <div class="card-content">
-                        <div class="classical-form">${word.diachronic.classical}</div>
-                        <div class="meaning">"${word.diachronic.meaning}"</div>
-                        <div class="changes-count">
-                            ${word.diachronic.total_changes} phonological change${word.diachronic.total_changes !== 1 ? 's' : ''} applied
-                        </div>
-                    </div>
+                <div class="info-card" style="border-left-color: var(--blue);">
+                    <h4>Classical Greek</h4>
+                    <div class="info-value">${word.diachronic.classical}</div>
+                    <div class="info-secondary">${word.diachronic.meaning}</div>
                 </div>
             `;
-            
-            // PIE Etymology Card
-            if (word.diachronic.pie_root) {
-                html += `
-                    <div class="analysis-card pie-card">
-                        <h4>🌳 Proto-Indo-European</h4>
-                        <div class="card-content">
-                            <div class="pie-root">${word.diachronic.pie_root}</div>
-                            ${word.diachronic.pie_meaning ? `<div class="pie-meaning">"${word.diachronic.pie_meaning}"</div>` : ''}
-                            ${word.diachronic.cognates ? `
-                            <div class="cognates">
-                                <strong>Cognates:</strong>
-                                ${Object.entries(word.diachronic.cognates).map(([lang, form]) => 
-                                    `<span class="cognate"><em>${lang}:</em> ${form}</span>`
-                                ).join('')}
-                            </div>` : ''}
-                        </div>
-                    </div>
-                `;
-            }
         }
         
         html += '</div>';
-        analysisColumn.innerHTML = html;
         
-        // RIGHT COLUMN: Diachronic Visualization
-        const visualColumn = document.createElement('div');
-        visualColumn.className = 'visual-column';
-        visualColumn.innerHTML = `
-            <div class="mapper-container">
-                <h4>⏳ Diachronic Evolution</h4>
-                <div id="mapper-${index}" class="mapper-canvas"></div>
-            </div>
-        `;
-        
-        resultWrapper.appendChild(analysisColumn);
-        resultWrapper.appendChild(visualColumn);
-        resultsContainer.appendChild(resultWrapper);
-        
-        // Render diachronic visualization
-        if (word.diachronic && word.diachronic.stages) {
-            setTimeout(() => {
-                renderDiachronicPath(
-                    `mapper-${index}`,
-                    word.transliteration.replace(/-/g, ''),
-                    word.diachronic.classical
-                );
-            }, 100);
-        }
-    });
-    
-    // Show paradigm section and populate
-    showParadigmSection();
-    if (results.length > 0 && paradigmWord) {
-        paradigmWord.value = results[0].transliteration;
-    }
-}
-
-// Render Diachronic Visualization
-async function renderDiachronicPath(containerId, mycenaean, classical) {
-    try {
-        const response = await fetch(`${API_BASE}/diachronic`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ mycenaean, classical })
-        });
-        
-        if (!response.ok) throw new Error('Diachronic fetch failed');
-        
-        const data = await response.json();
-        
-        const mapper = new DiachronicMapper(containerId, {
-            width: 420,
-            height: 550,
-            layout: 'vertical'
-        });
-        
-        mapper.visualize(data);
-        
-    } catch (error) {
-        console.error('Mapper error:', error);
-        const container = document.getElementById(containerId);
-        if (container) {
-            container.innerHTML = `
-                <div style="padding: 2rem; text-align: center; color: var(--base01);">
-                    <p>Visualization unavailable</p>
+        // PIE Etymology (if available)
+        if (word.diachronic && word.diachronic.pie_root) {
+            html += `
+                <div class="pie-compact">
+                    <h4 style="font-size: 0.75rem; color: var(--base01); text-transform: uppercase; margin-bottom: 0.5rem;">Proto-Indo-European</h4>
+                    <div class="pie-root">${word.diachronic.pie_root}</div>
+                    ${word.diachronic.pie_meaning ? `<div class="pie-meaning">"${word.diachronic.pie_meaning}"</div>` : ''}
+                    ${word.diachronic.cognates ? `
+                    <div class="cognates-compact">
+                        ${Object.entries(word.diachronic.cognates).map(([lang, form]) => 
+                            `<span class="cognate-tag">${lang}: ${form}</span>`
+                        ).join('')}
+                    </div>` : ''}
                 </div>
             `;
         }
-    }
+        
+        // Timeline (if diachronic stages available)
+        if (word.diachronic && word.diachronic.stages && word.diachronic.stages.length > 0) {
+            html += '<div class="timeline-compact">';
+            word.diachronic.stages.slice(0, 4).forEach((stage, i) => {
+                html += `
+                    <div class="timeline-stage">
+                        <div class="stage-form">${stage.form}</div>
+                        <div class="stage-period">${stage.period.split(' ')[0]}</div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+        
+        card.innerHTML = html;
+        resultsContainer.appendChild(card);
+        
+        // Auto-populate paradigm generator with first word
+        if (index === 0 && paradigmWord) {
+            paradigmWord.value = word.transliteration;
+        }
+    });
 }
 
-// Paradigm Generator Functions
-function showParadigmSection() {
-    if (paradigmSection) {
-        paradigmSection.style.display = 'block';
-    }
-}
-
+// Paradigm Generator
 async function generateParadigm() {
     const word = paradigmWord.value.trim();
     
@@ -278,11 +209,9 @@ async function generateParadigm() {
     generateParadigmBtn.disabled = true;
     
     try {
-        // Try from lexicon first
         let response = await fetch(`${API_BASE}/generate/${word}`);
         
         if (!response.ok) {
-            // Manual generation fallback
             response = await fetch(`${API_BASE}/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -296,113 +225,69 @@ async function generateParadigm() {
         }
         
         const data = await response.json();
-        displayParadigm(data);
+        displayParadigmCompact(data);
         
     } catch (error) {
         console.error('Paradigm generation error:', error);
-        alert('Failed to generate paradigm');
+        paradigmResults.innerHTML = '<p style="color: var(--red); font-size: 0.85rem;">Generation failed</p>';
+        paradigmResults.style.display = 'block';
     } finally {
-        generateParadigmBtn.textContent = 'Generate Paradigm';
+        generateParadigmBtn.textContent = 'Generate';
         generateParadigmBtn.disabled = false;
     }
 }
 
-function displayParadigm(data) {
+function displayParadigmCompact(data) {
     paradigmResults.style.display = 'block';
     
-    const statsContainer = paradigmResults.querySelector('.paradigm-stats');
-    const tableContainer = paradigmResults.querySelector('.paradigm-table-container');
+    let html = '<div class="paradigm-mini">';
     
     // Stats
-    statsContainer.innerHTML = `
-        <div class="paradigm-stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">${data.total_forms || data.total}</div>
-                <div class="stat-label">Total Forms</div>
-            </div>
-            <div class="stat-card attested">
-                <div class="stat-value">${data.attested || 0}</div>
-                <div class="stat-label">Attested on Tablets</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">${data.coverage || '0%'}</div>
-                <div class="stat-label">Coverage</div>
-            </div>
+    html += `
+        <div class="paradigm-stat">
+            <span>Total forms:</span>
+            <strong>${data.total_forms || data.total}</strong>
+        </div>
+        <div class="paradigm-stat">
+            <span>Attested:</span>
+            <strong style="color: var(--green);">${data.attested || 0}</strong>
+        </div>
+        <div class="paradigm-stat">
+            <span>Coverage:</span>
+            <strong>${data.coverage || '0%'}</strong>
         </div>
     `;
     
-    // Lemma info if available
-    if (data.lemma_data) {
-        let lemmaHTML = '<div class="lemma-info">';
-        if (data.lemma_data.meaning) {
-            lemmaHTML += `<p><strong>Meaning:</strong> ${data.lemma_data.meaning}</p>`;
-        }
-        if (data.lemma_data.classical) {
-            lemmaHTML += `<p><strong>Classical:</strong> ${data.lemma_data.classical}</p>`;
-        }
-        if (data.lemma_data.pie_root) {
-            lemmaHTML += `<p><strong>PIE Root:</strong> ${data.lemma_data.pie_root}`;
-            if (data.lemma_data.pie_meaning) {
-                lemmaHTML += ` "${data.lemma_data.pie_meaning}"`;
-            }
-            lemmaHTML += `</p>`;
-        }
-        lemmaHTML += '</div>';
-        statsContainer.innerHTML += lemmaHTML;
+    // Show first 8 forms
+    const forms = data.generated_paradigm || data.forms || [];
+    html += '<div style="margin-top: 1rem; max-height: 300px; overflow-y: auto;">';
+    
+    forms.slice(0, 10).forEach(form => {
+        const attestedClass = form.attested ? 'attested' : '';
+        html += `
+            <div class="form-mini ${attestedClass}">
+                <div style="font-weight: 600; color: var(--cyan);">${form.form}</div>
+                <div style="font-size: 0.75rem; color: var(--base01);">
+                    ${form.case || ''} ${form.number || ''}
+                    ${form.attested ? '<span style="color: var(--green);">✓</span>' : ''}
+                </div>
+            </div>
+        `;
+    });
+    
+    if (forms.length > 10) {
+        html += `<div style="text-align: center; padding: 0.5rem; color: var(--base01); font-size: 0.75rem;">+${forms.length - 10} more forms</div>`;
     }
     
-    // Paradigm table
-    const forms = data.generated_paradigm || data.forms;
-    
-    // Group by case
-    const byCase = {};
-    forms.forEach(form => {
-        const caseKey = form.case || 'other';
-        if (!byCase[caseKey]) byCase[caseKey] = [];
-        byCase[caseKey].push(form);
-    });
-    
-    let tableHTML = '<div class="paradigm-table">';
-    
-    Object.entries(byCase).forEach(([caseName, caseForms]) => {
-        tableHTML += `
-            <div class="case-group">
-                <h4 class="case-header">${caseName.toUpperCase()}</h4>
-                <div class="forms-grid">
-        `;
-        
-        caseForms.forEach(form => {
-            const attestedClass = form.attested ? 'attested' : 'theoretical';
-            const badge = form.attested 
-                ? '<span class="badge-attested">✓ Attested</span>' 
-                : '<span class="badge-theoretical">Theoretical</span>';
-            
-            tableHTML += `
-                <div class="form-card ${attestedClass}">
-                    <div class="form-transliteration">${form.form}</div>
-                    <div class="form-details">
-                        <span class="form-number">${form.number || ''}</span>
-                        ${badge}
-                    </div>
-                    <div class="form-reconstruction">*${form.reconstruction}</div>
-                </div>
-            `;
-        });
-        
-        tableHTML += '</div></div>';
-    });
-    
-    tableHTML += '</div>';
-    tableContainer.innerHTML = tableHTML;
-    
-    paradigmResults.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    html += '</div></div>';
+    paradigmResults.innerHTML = html;
 }
 
 // Load Lexicon
 async function loadLexicon() {
     if (lexiconContainer.style.display === 'block') {
         lexiconContainer.style.display = 'none';
-        loadLexiconBtn.textContent = 'Load Full Lexicon';
+        loadLexiconBtn.textContent = 'Browse';
         return;
     }
     
@@ -412,35 +297,41 @@ async function loadLexicon() {
         const response = await fetch(`${API_BASE}/lexicon`);
         const data = await response.json();
         
-        lexiconContainer.innerHTML = '<div class="lexicon-grid"></div>';
-        const grid = lexiconContainer.querySelector('.lexicon-grid');
+        let html = '<div class="lexicon-mini">';
         
+        // Sort alphabetically
         const sortedWords = data.words.sort((a, b) => 
-            (a.meaning || '').localeCompare(b.meaning || '')
+            a.transliteration.localeCompare(b.transliteration)
         );
         
         sortedWords.forEach(word => {
-            const item = document.createElement('div');
-            item.className = 'lexicon-item';
-            item.innerHTML = `
-                <div class="lex-trans">${word.transliteration}</div>
-                <div class="lex-meaning">${word.meaning}</div>
-                <div class="lex-classical">${word.classical}</div>
-                ${word.pie_root ? `<div class="lex-pie">${word.pie_root}</div>` : ''}
+            html += `
+                <div class="lex-item-mini" data-word="${word.transliteration}">
+                    <div class="lex-trans-mini">${word.transliteration}</div>
+                    <div class="lex-meaning-mini">${word.meaning}</div>
+                    ${word.pie_root ? `<div style="font-size: 0.7rem; color: var(--violet); margin-top: 0.2rem;">${word.pie_root}</div>` : ''}
+                </div>
             `;
+        });
+        
+        html += '</div>';
+        lexiconContainer.innerHTML = html;
+        
+        // Add click handlers
+        lexiconContainer.querySelectorAll('.lex-item-mini').forEach(item => {
             item.addEventListener('click', () => {
-                inputTextarea.value = word.transliteration;
-                inputTextarea.scrollIntoView({ behavior: 'smooth' });
+                const word = item.dataset.word;
+                inputTextarea.value = word;
+                analyzeText();
             });
-            grid.appendChild(item);
         });
         
         lexiconContainer.style.display = 'block';
-        loadLexiconBtn.textContent = `Hide Lexicon (${data.words.length} words)`;
+        loadLexiconBtn.textContent = `Hide (${data.words.length})`;
         
     } catch (error) {
         console.error('Failed to load lexicon:', error);
-        loadLexiconBtn.textContent = 'Load Full Lexicon';
+        loadLexiconBtn.textContent = 'Browse';
     }
 }
 
@@ -448,7 +339,7 @@ async function loadLexicon() {
 async function loadSoundChanges() {
     if (changesContainer.style.display === 'block') {
         changesContainer.style.display = 'none';
-        loadChangesBtn.textContent = 'Show Sound Changes';
+        loadChangesBtn.textContent = 'View Rules';
         return;
     }
     
@@ -458,53 +349,40 @@ async function loadSoundChanges() {
         const response = await fetch(`${API_BASE}/sound_changes`);
         const data = await response.json();
         
-        changesContainer.innerHTML = '';
+        let html = '<div style="max-height: 400px; overflow-y: auto;">';
         
         data.changes.forEach((change, index) => {
-            const card = document.createElement('div');
-            card.className = 'change-card';
-            card.innerHTML = `
-                <div class="change-header">
-                    <span class="change-number">${index + 1}</span>
-                    <h3>${change.name}</h3>
+            html += `
+                <div class="change-mini">
+                    <div class="change-name-mini">${index + 1}. ${change.name}</div>
+                    <div class="change-rule-mini">${change.source} → ${change.target}</div>
+                    <div style="font-size: 0.7rem; color: var(--base01); margin-top: 0.3rem;">${change.period}</div>
                 </div>
-                <div class="change-rule">${change.source} → ${change.target} / ${change.environment}</div>
-                <p class="change-desc">${change.description}</p>
-                <div class="change-period">📅 ${change.period}</div>
-                ${change.examples && change.examples.length > 0 ? `
-                <div class="change-examples">
-                    <strong>Examples:</strong>
-                    ${change.examples.slice(0, 3).map(ex => 
-                        `<span class="example">${ex[0]} → ${ex[1]}</span>`
-                    ).join('')}
-                </div>
-                ` : ''}
             `;
-            changesContainer.appendChild(card);
         });
         
+        html += '</div>';
+        changesContainer.innerHTML = html;
         changesContainer.style.display = 'block';
-        loadChangesBtn.textContent = `Hide Sound Changes (${data.changes.length} rules)`;
+        loadChangesBtn.textContent = `Hide (${data.changes.length})`;
         
     } catch (error) {
         console.error('Failed to load sound changes:', error);
-        loadChangesBtn.textContent = 'Show Sound Changes';
+        loadChangesBtn.textContent = 'View Rules';
     }
 }
+
 // Clear Input
 function clearInput() {
     inputTextarea.value = '';
     resultsSection.style.display = 'none';
     resultsContainer.innerHTML = '';
-    if (paradigmSection) {
-        paradigmSection.style.display = 'none';
-    }
     if (paradigmResults) {
         paradigmResults.style.display = 'none';
     }
 }
 
-// Load syllabary on page load
+// Load Syllabary
 async function loadSyllabary() {
     try {
         const response = await fetch(`${API_BASE.replace('/api', '')}/data/syllabary.json`);
@@ -513,7 +391,7 @@ async function loadSyllabary() {
         
         if (!grid) return;
         
-        // Sort by transliteration for easier finding
+        // Sort by transliteration
         const sortedSigns = Object.entries(data.signs).sort((a, b) => 
             a[1].transliteration.localeCompare(b[1].transliteration)
         );
@@ -527,8 +405,12 @@ async function loadSyllabary() {
             `;
             btn.title = `${info.transliteration} - Click to insert`;
             btn.addEventListener('click', () => {
-                inputTextarea.value += unicode;
+                const cursorPos = inputTextarea.selectionStart;
+                const textBefore = inputTextarea.value.substring(0, cursorPos);
+                const textAfter = inputTextarea.value.substring(cursorPos);
+                inputTextarea.value = textBefore + unicode + textAfter;
                 inputTextarea.focus();
+                inputTextarea.setSelectionRange(cursorPos + 1, cursorPos + 1);
             });
             grid.appendChild(btn);
         });
@@ -537,9 +419,9 @@ async function loadSyllabary() {
     }
 }
 
-// Initialise on page load
+// Initialise
 document.addEventListener('DOMContentLoaded', () => {
     loadSyllabary();
-    console.log('Linear B Diachronic Phonological Mapper initialized');
-    console.log('API endpoint:', API_BASE);
+    console.log('Linear B Diachronic Mapper initialized');
+    console.log('Keyboard shortcut: Ctrl/Cmd + Enter to analyze');
 });
