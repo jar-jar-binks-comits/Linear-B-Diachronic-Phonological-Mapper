@@ -69,6 +69,8 @@ class LinearBTranscriber:
             original = ''.join(t.char for t in word_tokens)
             transliteration = self.transcribe_word(word_tokens)
             
+            print(f"[TRANSCRIBER] Word: {original!r} → {transliteration!r}")
+            
             if transliteration:
                 results.append({
                     'original': original,
@@ -76,7 +78,7 @@ class LinearBTranscriber:
                     'token_count': len([t for t in word_tokens 
                                        if t.type == TokenType.SYLLABOGRAM])
                 })
-        
+        print(f"[TRANSCRIBER] Returning {len(results)} results")
         return results
     
     def get_phonetic_form(self, transliteration: str) -> str:

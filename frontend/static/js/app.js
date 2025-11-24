@@ -395,7 +395,7 @@ async function loadSyllabary() {
         const sortedSigns = Object.entries(data.signs).sort((a, b) => 
             a[1].transliteration.localeCompare(b[1].transliteration)
         );
-        
+
         sortedSigns.forEach(([unicode, info]) => {
             const btn = document.createElement('button');
             btn.className = 'syllabary-sign';
