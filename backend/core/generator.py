@@ -249,86 +249,86 @@ class ParadigmGenerator:
             return False
         return char.lower() not in 'aeiouāēīōūαεηιουω'
     
-def _syllabify(self, form: str) -> str:
-    """
-    Convert phonological form to syllabic Linear B transliteration
-    
-    Linear B is a CV syllabary. Algorithm:
-    1. Remove geminates
-    2. Break into CV or V syllables
-    3. Final consonants (s, n, r) stand alone
-    
-    Args:
-        form: Phonological form (e.g., "wanaks")
+    def _syllabify(self, form: str) -> str:
+        """
+        Convert phonological form to syllabic Linear B transliteration
         
-    Returns:
-        Syllabified transliteration (e.g., "wa-na-ks")
-    """
-    if not form:
-        return form
-    
-    # Step 1: Remove geminates
-    cleaned = []
-    i = 0
-    while i < len(form):
-        if i < len(form) - 1 and form[i] == form[i + 1] and self._is_consonant(form[i]):
-            cleaned.append(form[i])
-            i += 2
-        else:
-            cleaned.append(form[i])
-            i += 1
-    
-    form = ''.join(cleaned)
-    
-    # Step 2: Syllabify
-    syllables = []
-    i = 0
-    
-    while i < len(form):
-        # Case 1: Consonant + Vowel (standard CV)
-        if i < len(form) - 1 and self._is_consonant(form[i]) and not self._is_consonant(form[i + 1]):
-            syllables.append(form[i:i+2])
-            i += 2
+        Linear B is a CV syllabary. Algorithm:
+        1. Remove geminates
+        2. Break into CV or V syllables
+        3. Final consonants (s, n, r) stand alone
         
-        # Case 2: Standalone vowel (initial or after vowel)
-        elif not self._is_consonant(form[i]):
-            syllables.append(form[i])
-            i += 1
+        Args:
+            form: Phonological form (e.g., "wanaks")
+            
+        Returns:
+            Syllabified transliteration (e.g., "wa-na-ks")
+        """
+        if not form:
+            return form
         
-        # Case 3: Consonant cluster or final consonant
-        elif self._is_consonant(form[i]):
-            # Check if this is final position
-            if i == len(form) - 1:
-                # Final consonant - keep it standalone if it's s, n, r
-                if form[i] in 'snr':
-                    syllables.append(form[i])
-                # Otherwise it should have been removed by orthographic rules
+        # Step 1: Remove geminates
+        cleaned = []
+        i = 0
+        while i < len(form):
+            if i < len(form) - 1 and form[i] == form[i + 1] and self._is_consonant(form[i]):
+                cleaned.append(form[i])
+                i += 2
+            else:
+                cleaned.append(form[i])
+                i += 1
+        
+        form = ''.join(cleaned)
+        
+        # Step 2: Syllabify
+        syllables = []
+        i = 0
+        
+        while i < len(form):
+            # Case 1: Consonant + Vowel (standard CV)
+            if i < len(form) - 1 and self._is_consonant(form[i]) and not self._is_consonant(form[i + 1]):
+                syllables.append(form[i:i+2])
+                i += 2
+            
+            # Case 2: Standalone vowel (initial or after vowel)
+            elif not self._is_consonant(form[i]):
+                syllables.append(form[i])
                 i += 1
             
-            # Consonant cluster: check if followed by another consonant
-            elif i < len(form) - 1 and self._is_consonant(form[i + 1]):
-                # Two consonants together
-                # Check if second consonant is followed by vowel
-                if i + 2 < len(form) and not self._is_consonant(form[i + 2]):
-                    # Pattern: CCV - take second C + V together, first C standalone
-                    # But Linear B can't write lone consonants except final s/n/r
-                    # So this becomes problematic - skip first consonant
-                    syllables.append(form[i+1:i+3])
-                    i += 3
+            # Case 3: Consonant cluster or final consonant
+            elif self._is_consonant(form[i]):
+                # Check if this is final position
+                if i == len(form) - 1:
+                    # Final consonant - keep it standalone if it's s, n, r
+                    if form[i] in 'snr':
+                        syllables.append(form[i])
+                    # Otherwise it should have been removed by orthographic rules
+                    i += 1
+                
+                # Consonant cluster: check if followed by another consonant
+                elif i < len(form) - 1 and self._is_consonant(form[i + 1]):
+                    # Two consonants together
+                    # Check if second consonant is followed by vowel
+                    if i + 2 < len(form) and not self._is_consonant(form[i + 2]):
+                        # Pattern: CCV - take second C + V together, first C standalone
+                        # But Linear B can't write lone consonants except final s/n/r
+                        # So this becomes problematic - skip first consonant
+                        syllables.append(form[i+1:i+3])
+                        i += 3
+                    else:
+                        # CC at end or CCC cluster
+                        # Keep final consonants if s/n/r
+                        remaining = form[i:]
+                        if len(remaining) <= 2 and any(c in 'snr' for c in remaining):
+                            syllables.append(remaining)
+                        i = len(form)
                 else:
-                    # CC at end or CCC cluster
-                    # Keep final consonants if s/n/r
-                    remaining = form[i:]
-                    if len(remaining) <= 2 and any(c in 'snr' for c in remaining):
-                        syllables.append(remaining)
-                    i = len(form)
+                    # Single consonant not followed by vowel (shouldn't happen)
+                    i += 1
             else:
-                # Single consonant not followed by vowel (shouldn't happen)
                 i += 1
-        else:
-            i += 1
-    
-    return '-'.join(syllables)
+        
+        return '-'.join(syllables)
     
     def generate_verb_paradigm(self, 
                                root: str,
