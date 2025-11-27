@@ -4,9 +4,9 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**The world's first computational Mycenaean Greek morphological analyzer and paradigm generator.**
+**The world's first computational Mycenaean Greek morphological analyser and paradigm generator.**
 
-An interactive web tool for transcribing, analyzing, and visualizing the phonological evolution of Linear B script (Mycenaean Greek, c. 1450-1200 BCE) to Classical Greek (c. 800-400 BCE).
+An interactive web tool for transcribing, analysing, and visualising the phonological evolution of Linear B script (Mycenaean Greek, c. 1450-1200 BCE) to Classical Greek (c. 800-400 BCE).
 
 ![Linear B Tool Screenshot](Screenshot.png)
 
@@ -41,7 +41,7 @@ An interactive web tool for transcribing, analyzing, and visualizing the phonolo
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/YOUR_USERNAME/linear-b-mapper.git
+git clone https://github.com/jar-jar-binks-comits/Linear-B-Diachronic-Phonological-Mapper.git
 cd linear-b-mapper
 
 # Create virtual environment
@@ -94,7 +94,7 @@ linear-b-mapper/
 
 ### Morphological Analysis
 
-The analyzer uses paradigm-based segmentation:
+The analyser uses paradigm-based segmentation:
 
 1. **Stem extraction** — Identify base form using known declension patterns
 2. **Ending identification** — Match against 24 distinct case/number endings
@@ -178,24 +178,17 @@ Contributions welcome, especially:
 
 ---
 
-## 📝 License
-
-MIT License — see [LICENSE](LICENSE) file.
-
----
-
 ## 👤 Author
 
 **Ella Capellini**  
-Computational Neuroscientist & Linguist  
-Research: Computational auditory neuroscience, psycholinguistics, historical linguistics
+ecapellini.02@gmail.com
 
 ---
 
 ## 🙏 Acknowledgments
 
 - Michael Ventris & John Chadwick — Linear B decipherment (1952)
-- The Unicode Consortium — Linear B standardization
+- The Unicode Consortium — Linear B standardisation
 - D3.js — Visualisation library
 
 ---
