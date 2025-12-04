@@ -1,6 +1,6 @@
 /* Solarized Dark Academic Theme */
 :root {
-    --base03: #002b36;
+    --base03: hsl(192, 100%, 11%);
     --base02: #073642;
     --base01: #586e75;
     --base00: #657b83;
