@@ -12,7 +12,7 @@ An interactive web tool for transcribing, analysing, and visualising the phonolo
 
 ---
 
-## ✨ Features
+## Features
 
 ### Core Analysis
 - **Linear B Transcription** — Convert Unicode Linear B syllabograms to standard transliteration
@@ -20,10 +20,10 @@ An interactive web tool for transcribing, analysing, and visualising the phonolo
 - **100+ Word Lexicon** — Comprehensive vocabulary covering nouns, verbs, adjectives, toponyms, and theonyms
 
 ### Unique Capabilities
-- **🔄 Paradigm Generator** — Generate all theoretically possible inflected forms for any lemma (WORLD FIRST)
-- **📊 Diachronic Visualization** — Interactive D3.js timeline showing sound changes from Mycenaean → Classical Greek
-- **🌳 PIE Etymology** — Proto-Indo-European roots with cognates across Indo-European languages
-- **📜 Phonological Rules Engine** — 10+ ordered sound change rules (digamma loss, labiovelar splits, compensatory lengthening)
+- **Paradigm Generator** — Generate all theoretically possible inflected forms for any lemma (WORLD FIRST)
+- **Diachronic Visualisation** — Interactive D3.js timeline showing sound changes from Mycenaean → Classical Greek
+- **PIE Etymology** — Proto-Indo-European roots with cognates across Indo-European languages
+- **Phonological Rules Engine** — 10+ ordered sound change rules (digamma loss, labiovelar splits, compensatory lengthening)
 
 ### User Interface
 - **Solarized Dark Theme** — Easy on the eyes for extended research sessions
@@ -32,7 +32,7 @@ An interactive web tool for transcribing, analysing, and visualising the phonolo
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.10+
@@ -60,7 +60,7 @@ Open browser to `http://localhost:5000`
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 linear-b-mapper/
 ├── backend/
@@ -90,7 +90,7 @@ linear-b-mapper/
 
 ---
 
-## 🔬 Technical Details
+## Technical Details
 
 ### Morphological Analysis
 
@@ -129,7 +129,7 @@ The system models Linear B writing constraints:
 
 ---
 
-## 📚 Data Sources
+## Data Sources
 
 - Ventris, M. & Chadwick, J. (1973). *Documents in Mycenaean Greek*. 2nd ed. Cambridge.
 - Morpurgo Davies, A. (2002). "Mycenaean Greek." In *A History of Ancient Greek*.
@@ -139,7 +139,7 @@ The system models Linear B writing constraints:
 
 ---
 
-## 🛠️ API Reference
+## API Reference
 
 ### `POST /api/transcribe`
 Transcribe Linear B Unicode to transliteration.
@@ -168,7 +168,7 @@ List all phonological rules.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome, especially:
 - Additional lexicon entries (with scholarly citations)
@@ -178,14 +178,14 @@ Contributions welcome, especially:
 
 ---
 
-## 👤 Author
+## Author
 
 **Ella Capellini**  
 ecapellini.02@gmail.com
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Michael Ventris & John Chadwick — Linear B decipherment (1952)
 - The Unicode Consortium — Linear B standardisation
