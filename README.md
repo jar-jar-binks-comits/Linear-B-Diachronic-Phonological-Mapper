@@ -4,7 +4,7 @@
 [![Flask](https://img.shields.io/badge/Flask-3.0+-green.svg)](https://flask.palletsprojects.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**The world's first computational Mycenaean Greek morphological analyser and paradigm generator.**
+**A computational Mycenaean Greek morphological analyser and paradigm generator.**
 
 An interactive web tool for transcribing, analysing, and visualising the phonological evolution of Linear B script (Mycenaean Greek, c. 1450-1200 BCE) to Classical Greek (c. 800-400 BCE).
 
