@@ -3,16 +3,15 @@ Tests for backend/app.py (Flask API)
 
 Run with:  pytest tests/ -v
 """
-
-import json
 import sys
 import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
+import json
 import io
 import pytest
 from unittest.mock import MagicMock, patch
 
 sys.stdout = sys.__stdout__
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "backend"))
 
 @pytest.fixture(scope="session")
 def app():
