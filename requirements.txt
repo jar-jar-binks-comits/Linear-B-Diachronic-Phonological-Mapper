@@ -1,11 +1,6 @@
-cd "/Users/ellacapellini/PROJECT/Linear B + diachronic phonological mapper"
-```
 
-**File: `requirements.txt`**
-```
 flask>=3.0.0
 flask-cors>=4.0.0
-```
 
 ---
 
