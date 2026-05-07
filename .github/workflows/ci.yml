@@ -25,4 +25,4 @@ jobs:
         run: pip install -r requirements.txt pytest
 
       - name: Run tests
-        run: PYTHONPATH=backend pytest tests/ -v
+        run: pytest tests/ -v
